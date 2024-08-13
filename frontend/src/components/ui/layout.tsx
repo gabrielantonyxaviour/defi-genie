@@ -7,24 +7,21 @@ import ConnectButton from "./connect-button";
 
 const sidebarNavItems = [
   {
-    title: "Profile",
+    title: "Dashboard",
     href: "/",
   },
   {
-    title: "Account",
-    href: "/",
+    title: "Positions",
+    href: "/positions",
   },
   {
-    title: "Appearance",
-    href: "/",
+    title: "Analytics",
+    href: "/analytics",
   },
+
   {
-    title: "Notifications",
-    href: "/",
-  },
-  {
-    title: "Display",
-    href: "/",
+    title: "Ask AI",
+    href: "/chat",
   },
 ];
 
