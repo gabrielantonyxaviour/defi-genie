@@ -146,19 +146,31 @@ export const Icons = {
     </svg>
   ),
   rightArrow: (props: IconProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" {...props}>
+      <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+    </svg>
+  ),
+  binance: (props: IconProps) => (
     <svg
+      enable-background="new 0 0 1024 1024"
+      viewBox="0 0 1024 1024"
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
       {...props}
     >
-      <path d="M5 12h14m-7-7l7 7-7 7" />
+      <circle cx="512" cy="512" fill="#f3ba2f" r="512" />
+      <g fill="#fff">
+        <path d="m404.9 468 107.1-107.1 107.1 107.2 62.3-62.3-169.4-169.5-169.4 169.4z" />
+        <path
+          d="m254.6 467.9h88.1v88.1h-88.1z"
+          transform="matrix(.7071 -.7071 .7071 .7071 -274.5652 361.1246)"
+        />
+        <path d="m404.9 556 107.1 107.1 107.1-107.2 62.4 62.3h-.1l-169.4 169.5-169.4-169.4-.1-.1z" />
+        <path
+          d="m681.3 468h88.1v88.1h-88.1z"
+          transform="matrix(.7071 -.7071 .7071 .7071 -149.5987 662.8792)"
+        />
+        <path d="m575.2 512-63.2-63.3-46.7 46.8-5.4 5.3-11.1 11.1-.1.1.1.1 63.2 63.2z" />
+      </g>
     </svg>
   ),
 };

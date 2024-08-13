@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { SidebarNav } from "@/components/ui/side-bar";
 import { Button } from "./button";
+import ConnectButton from "./connect-button";
 
 const sidebarNavItems = [
   {
@@ -42,9 +43,7 @@ export default function Layout({ children }: LayoutProps) {
               Defi.Genie
             </h2>
           </div>
-          <Button variant="outline" className="my-auto">
-            Connect Wallet
-          </Button>
+          <ConnectButton />
         </div>
         <Separator />
 
