@@ -22,7 +22,7 @@ export default function RootLayout({
       <head />
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "h-screen bg-background font-sans antialiased",
           fontSans.variable
         )}
       >
@@ -33,10 +33,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Layout>
-            <div vaul-drawer-wrapper="">
-              <div className="relative flex min-h-screen flex-col bg-background">
-                {children}
-              </div>
+            <div className="relative flex flex-col bg-background w-full h-full">
+              {children}
             </div>
             <ThemeSwitcher />
             <Toaster />

@@ -34,22 +34,26 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <>
-      <div className="space-y-6 p-10 pb-16">
-        <div className="space-y-0.5 flex w-full justify-between">
-          <div className="flex">
+      <div className="px-8 w-full h-screen flex flex-col">
+        <div className="flex w-full justify-between">
+          <div className="flex items-center py-6">
             <Image src={"/logo.png"} height={50} width={60} alt="Logo" />
-            <h2 className="text-2xl font-bold tracking-tight ml-2">
+            <h2 className="text-xl font-bold tracking-tight ml-2">
               Defi.Genie
             </h2>
           </div>
-          <Button variant="outline">Connect Wallet</Button>
+          <Button variant="outline" className="my-auto">
+            Connect Wallet
+          </Button>
         </div>
-        <Separator className="my-6" />
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <aside className="-mx-4 lg:w-1/5">
+        <Separator />
+
+        <div className="flex flex-1 space-x-12 pt-6 w-full">
+          <aside className="-mx-2 w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-2xl">{children}</div>
+
+          <div className="flex-1 h-full">{children}</div>
         </div>
       </div>
     </>
