@@ -11,7 +11,7 @@ export default function ConnectButton() {
   return status == "connected" ? (
     <Button
       variant="outline"
-      className="my-auto hover:text-black hover:font-semibold"
+      className="my-auto "
       onClick={() => {
         disconnect();
       }}
@@ -22,7 +22,7 @@ export default function ConnectButton() {
   ) : (
     <Button
       variant="outline"
-      className="my-auto hover:text-black hover:font-semibold"
+      className="my-auto"
       onClick={() => {
         console.log("connect");
         connect({
