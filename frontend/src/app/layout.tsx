@@ -40,9 +40,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <Layout>
-                <div className="relative flex flex-col bg-background w-full h-full">
-                  {children}
-                </div>
+                {children}
                 <ThemeSwitcher />
                 <Toaster />
               </Layout>
