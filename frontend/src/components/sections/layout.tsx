@@ -18,10 +18,6 @@ const sidebarNavItems = [
     title: "Positions",
     href: "/positions",
   },
-  {
-    title: "Analytics",
-    href: "/analytics",
-  },
 
   {
     title: "Ask AI",
