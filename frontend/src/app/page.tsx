@@ -33,8 +33,8 @@ export default function Page() {
           placeholder="Enter your prompt"
           className="sticky top-0 z-50  border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
         />
-        <Button className="ml-2">
-          <Icons.rightArrow className="h-3 w-3 fill-current" />
+        <Button className="ml-2" disabled={true}>
+          <Icons.rightArrow className="h-3 w-3 fill-current font-bold text-black" />
         </Button>
       </div>
     </div>
