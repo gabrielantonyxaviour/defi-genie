@@ -4,8 +4,8 @@ import { useAccount } from "wagmi";
 import DefaultLanding from "@/components/sections/default-landing";
 import { TokenBalance } from "@/components/ui/token-balance";
 import TokenBalanceCard from "@/components/sections/token-balance-card";
-import PieChartCard from "@/components/sections/pie-chart-card";
 import Image from "next/image";
+import { PieChartComponent } from "@/components/ui/pie-chart";
 export default function Page() {
   const { status } = useAccount();
 
@@ -29,7 +29,7 @@ export default function Page() {
       </div>
       <div className="grid grid-cols-3 gap-4">
         <TokenBalanceCard />
-        <PieChartCard />
+        <PieChartComponent />
       </div>
     </div>
   );
