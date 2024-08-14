@@ -26,19 +26,19 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
       {...props}
     >
       {items.map((item, index) => (
-        <button
+        <Link
           key={item.href}
-          onClick={() => setSelected(index)}
+          href={item.href}
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            selected == index
+            item.href == pathname
               ? "bg-yellow-300 text-black font-bold hover:bg-yellow-300 hover:text-black"
               : "hover:bg-transparent",
             "justify-start hover:translate-x-1 transition-transform"
           )}
         >
           {item.title}
-        </button>
+        </Link>
       ))}
     </nav>
   );
