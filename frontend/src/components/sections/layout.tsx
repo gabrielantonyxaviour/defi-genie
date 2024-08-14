@@ -56,7 +56,7 @@ export default function Layout({ children }: LayoutProps) {
 
           <div className="flex-1 flex flex-col w-full h-full">
             {status != "connected" ? <DefaultLanding /> : children}
-            <div className="flex w-[75%] mx-auto pb-4">
+            <div className="flex w-[75%] mx-auto py-4">
               <Input
                 type="text"
                 disabled={status != "connected"}
