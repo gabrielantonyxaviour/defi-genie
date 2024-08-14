@@ -2,10 +2,10 @@ import Image from "next/image";
 
 import { Separator } from "@/components/ui/separator";
 import { SidebarNav } from "@/components/ui/side-bar";
-import { Button } from "./button";
-import ConnectButton from "./connect-button";
-import { Input } from "./input";
-import { Icons } from "./icons";
+import { Button } from "@/components/ui/button";
+import ConnectButton from "@/components/ui/connect-button";
+import { Input } from "@/components/ui/input";
+import { Icons } from "@/components/ui/icons";
 import { useAccount } from "wagmi";
 import DefaultLanding from "../sections/default-landing";
 
