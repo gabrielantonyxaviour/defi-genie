@@ -11,7 +11,7 @@ export default function ConnectButton() {
   return status == "connected" ? (
     <Button
       variant="outline"
-      className="my-auto"
+      className="my-auto "
       onClick={() => {
         disconnect();
       }}
