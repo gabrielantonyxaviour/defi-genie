@@ -18,19 +18,26 @@ import { useState } from "react";
 export default function PositionsCard() {
   const [checked, SetChecked] = useState(false);
   return (
-    <Card className="col-span-2">
+    <Card className="col-span-3">
       <CardHeader>
         <CardTitle>
           <div className="flex justify-between items-center">
             <p>UniswapV3 Positions</p>
-            <div className="flex">
-              <Switch
-                checked={checked}
-                onCheckedChange={() => {
-                  SetChecked(!checked);
-                }}
-              />
-              <Label htmlFor="airplane-mode">Airplane Mode</Label>
+            <div className="hidden md:flex items-center space-x-6">
+              <div className="hidden lg:flex items-center space-x-2">
+                <Switch
+                  checked={checked}
+                  onCheckedChange={() => {
+                    SetChecked(!checked);
+                  }}
+                />
+                <Label
+                  htmlFor="airplane-mode"
+                  className="text-xs font-semibold"
+                >
+                  View Closed
+                </Label>
+              </div>
 
               <Link
                 href={"https://app.uniswap.org/add"}
