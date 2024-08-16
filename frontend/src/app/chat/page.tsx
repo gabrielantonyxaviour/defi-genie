@@ -10,7 +10,7 @@ import { Icons } from "@/components/ui/icons";
 import generateChatResponse from "@/lib/openai/chat";
 import { useAccount } from "wagmi";
 import { forma } from "viem/chains";
-
+import { ReactTyped } from "react-typed";
 interface Convo {
   id: string;
   isAI: boolean;
@@ -29,7 +29,7 @@ export default function Page() {
   const { status } = useAccount();
   return (
     <div className="flex-1 flex flex-col items-center justify-center w-full mx-auto pt-8">
-      <div className="flex-1 w-[80%] ">
+      <div className="flex-1 w-[80%] flex flex-col space-y-4">
         {convos.map((convo) => (
           <div
             key={convo.id}
@@ -43,9 +43,18 @@ export default function Page() {
                 <AvatarFallback>OM</AvatarFallback>
               </Avatar>
             )}
-            <Card>
+            <Card className="max-w-[70%]">
               <CardContent className="py-3">
-                <p className="">{convo.message}</p>
+                {convo.isAI ? (
+                  <ReactTyped
+                    strings={[convo.message]}
+                    typeSpeed={15}
+                    showCursor={false}
+                    onStop={() => {}}
+                  />
+                ) : (
+                  <p className="">{convo.message}</p>
+                )}
               </CardContent>
             </Card>
             {!convo.isAI && (
