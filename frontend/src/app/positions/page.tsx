@@ -79,7 +79,7 @@ export default function Page() {
   useEffect(() => {
     (async function () {
       const { positions: pos, actions: act } = await getPositionsPage({
-        address: "0x5A6B842891032d702517a4E52ec38eE561063539",
+        address: "0x0429A2Da7884CA14E53142988D5845952fE4DF6a",
       });
       setPositions(pos);
       setActions(act);
