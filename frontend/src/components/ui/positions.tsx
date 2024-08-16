@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Position } from "@/lib/constants";
+import { Position } from "@/lib/type";
 
 export function Positions({ positions }: { positions: Position[] }) {
   return (

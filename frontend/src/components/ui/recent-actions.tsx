@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { buttonVariants } from "./button";
 import Link from "next/link";
-import { Action } from "@/lib/constants";
+import { Action } from "@/lib/type";
 import { timeAgo } from "@/lib/utils";
 
 export function RecentActions({ actions }: { actions: Action[] }) {

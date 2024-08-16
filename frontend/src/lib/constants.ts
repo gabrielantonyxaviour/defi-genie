@@ -1,21 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { Address } from "./type";
 
-type Address = `0x${string}`;
-
-export type Action = {
-  txId: string;
-  actionId: string;
-  timeStamp: string;
-};
-export type Position = {
-  id: string;
-  token0: string;
-  token1: string;
-  feeTier: string;
-  minThreshold: string;
-  maxThreshold: string;
-  status: "In range" | "Closed" | "Out of range";
-};
 export const WHITELISTED_ADDRESSES: Address[] = [
   "0x5A6B842891032d702517a4E52ec38eE561063539",
   "0x0429A2Da7884CA14E53142988D5845952fE4DF6a",
@@ -64,8 +49,8 @@ export const SAMPLE_GRAPH_RESPONSE = {
     ],
     positions: [
       {
-        collectedFeesToken0: "0",
-        collectedFeesToken1: "0",
+        collectedFeesToken0: "0.000446495920536291",
+        collectedFeesToken1: "0.000000819680344976",
         collectedToken0: "0",
         collectedToken1: "0",
         depositedToken0: "0.564916974671831766",

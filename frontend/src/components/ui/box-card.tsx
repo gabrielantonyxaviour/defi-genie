@@ -21,7 +21,7 @@ export default function BoxCard({
       <CardContent>
         <div
           className={`text-md md:text-lg lg:text-xl font-bold ${
-            title == "Net Revenue" || title == "Claimmables"
+            title == "Profit / Loss" || title == "Claimed Fees"
               ? value[0] == "+"
                 ? "text-green-500"
                 : value[0] == "-"

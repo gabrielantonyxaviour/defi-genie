@@ -10,7 +10,7 @@ import { buttonVariants } from "../ui/button";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import PositionsHeader from "../ui/positions-header";
-import { Position } from "@/lib/constants";
+import { Position } from "@/lib/type";
 
 export default function PositionsCard({
   positions,

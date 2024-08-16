@@ -15,7 +15,7 @@ import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import { useState } from "react";
 import { RecentActions } from "../ui/recent-actions";
-import { Action } from "@/lib/constants";
+import { Action } from "@/lib/type";
 
 export default function RecentActionsCard({ actions }: { actions: Action[] }) {
   const [checked, SetChecked] = useState(false);
