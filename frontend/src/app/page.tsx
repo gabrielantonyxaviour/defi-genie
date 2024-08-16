@@ -11,6 +11,7 @@ import { roundUpToFiveDecimals } from "@/lib/utils";
 import { getBalance } from "@wagmi/core";
 import { config } from "@/lib/config";
 import { TOKEN_ADDRESSES } from "@/lib/constants";
+import Spinner from "@/components/ui/loading";
 
 export default function Page() {
   const { status, address } = useAccount();
@@ -62,7 +63,7 @@ export default function Page() {
     usdcBalance == undefined ||
     usdtBalance == undefined
   )
-    return <div>Loading...</div>;
+    return <Spinner />;
   return (
     <div className="flex-1">
       <div className="flex flex-col items-center py-6">

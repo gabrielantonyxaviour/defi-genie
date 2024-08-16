@@ -16,7 +16,11 @@ export function RecentActions({ actions }: { actions: Action[] }) {
         <div key={index} className="flex items-center">
           <div className="space-y-1">
             <p className="text-sm font-medium leading-none">
-              {action.actionId == "1" ? "Create Position" : "Add Liquidity"}
+              {action.actionId == "1"
+                ? "Create Position"
+                : action.actionId == "2"
+                ? "Add Liquidity"
+                : "Claim Fees"}
             </p>
             <p className="text-xs text-muted-foreground">
               {timeAgo(action.timeStamp)}

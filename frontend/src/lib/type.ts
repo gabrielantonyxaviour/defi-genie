@@ -11,6 +11,8 @@ export type Position = {
   token1: string;
   depositedToken0: string;
   depositedToken1: string;
+  collectedFeesToken0: string;
+  collectedFeesToken1: string;
   feeTier: string;
   minThreshold: string;
   maxThreshold: string;
