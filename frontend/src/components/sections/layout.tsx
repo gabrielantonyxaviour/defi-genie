@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-import { Separator } from "@/components/ui/separator";
 import { SidebarNav } from "@/components/ui/side-bar";
 import { Button } from "@/components/ui/button";
 import ConnectButton from "@/components/ui/connect-button";
@@ -43,9 +42,8 @@ export default function Layout({ children }: LayoutProps) {
           </div>
           <ConnectButton />
         </div>
-        <Separator />
 
-        <div className="flex flex-1 space-x-12 pt-6 w-full">
+        <div className="flex flex-1 space-x-12 w-full">
           <aside className="-mx-2 w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
