@@ -63,7 +63,11 @@ export default function Page() {
     usdcBalance == undefined ||
     usdtBalance == undefined
   )
-    return <Spinner />;
+    return (
+      <div className="flex-1 flex flex-col justify-center items-center">
+        <Spinner />
+      </div>
+    );
   return (
     <div className="flex-1">
       <div className="flex flex-col items-center py-6">

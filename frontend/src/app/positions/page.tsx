@@ -5,7 +5,6 @@ import PositionsCard from "@/components/sections/positions-card";
 import RecentActionsCard from "@/components/sections/recent-actions-card";
 import BoxCard from "@/components/ui/box-card";
 import Spinner from "@/components/ui/loading";
-import { SAMPLE_GRAPH_RESPONSE } from "@/lib/constants";
 import getPositionsPage from "@/lib/graph-queries/getPositionsPage";
 import { Action, Position } from "@/lib/type";
 import { getTotalClaimed, getTotalDeposited } from "@/lib/utils";
