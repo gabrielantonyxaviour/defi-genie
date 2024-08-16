@@ -1,9 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-export const WHITELISTED_ADDRESSES = [
+type Address = `0x${string}`;
+export const WHITELISTED_ADDRESSES: Address[] = [
   "0x5A6B842891032d702517a4E52ec38eE561063539",
   "0x0429A2Da7884CA14E53142988D5845952fE4DF6a",
 ];
+
+export const TOKEN_ADDRESSES: Record<string, Address> = {
+  usdc: "0x64544969ed7ebf5f083679233325356ebe738930",
+  usdt: "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
+};
 
 export const COINMARKETCAP_IDS = {
   bnb: 1839,

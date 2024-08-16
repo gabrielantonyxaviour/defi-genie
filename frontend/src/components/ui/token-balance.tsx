@@ -1,6 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function TokenBalance() {
+export function TokenBalance({
+  balances,
+  usdBalances,
+}: {
+  balances: Record<string, string>;
+  usdBalances: Record<string, string>;
+}) {
   return (
     <div className="space-y-8">
       <div className="flex items-center">
@@ -15,8 +21,8 @@ export function TokenBalance() {
           <p className="text-sm text-muted-foreground">BNB</p>
         </div>
         <div className="ml-auto space-y-1 text-right">
-          <p className="text-sm font-medium leading-none">0.000045</p>
-          <p className="text-sm text-muted-foreground">$1.89</p>
+          <p className="text-sm font-medium leading-none">{balances.bnb}</p>
+          <p className="text-sm text-muted-foreground">${usdBalances.bnb}</p>
         </div>
       </div>
       <div className="flex items-center">
@@ -29,8 +35,8 @@ export function TokenBalance() {
           <p className="text-sm text-muted-foreground">USDT</p>
         </div>
         <div className="ml-auto space-y-1 text-right">
-          <p className="text-sm font-medium leading-none">0.000045</p>
-          <p className="text-sm text-muted-foreground">$1.89</p>
+          <p className="text-sm font-medium leading-none">{balances.usdt}</p>
+          <p className="text-sm text-muted-foreground">${usdBalances.usdt}</p>
         </div>
       </div>
       <div className="flex items-center">
@@ -43,8 +49,8 @@ export function TokenBalance() {
           <p className="text-sm text-muted-foreground">USDC</p>
         </div>
         <div className="ml-auto space-y-1 text-right">
-          <p className="text-sm font-medium leading-none">0.000045</p>
-          <p className="text-sm text-muted-foreground">$1.89</p>
+          <p className="text-sm font-medium leading-none">{balances.usdc}</p>
+          <p className="text-sm text-muted-foreground">${usdBalances.usdc}</p>
         </div>
       </div>
     </div>

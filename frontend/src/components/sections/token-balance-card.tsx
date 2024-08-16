@@ -8,7 +8,13 @@ import {
 } from "@/components/ui/card";
 import { TokenBalance } from "@/components/ui/token-balance";
 
-export default function TokenBalanceCard() {
+export default function TokenBalanceCard({
+  balances,
+  usdBalances,
+}: {
+  balances: Record<string, string>;
+  usdBalances: Record<string, string>;
+}) {
   return (
     <Card className="col-span-2">
       <CardHeader>
@@ -18,7 +24,7 @@ export default function TokenBalanceCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <TokenBalance />
+        <TokenBalance balances={balances} usdBalances={usdBalances} />
       </CardContent>
     </Card>
   );
