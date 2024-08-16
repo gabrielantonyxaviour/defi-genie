@@ -11,6 +11,7 @@ import generateChatResponse from "@/lib/openai/chat";
 import { useAccount } from "wagmi";
 import { forma } from "viem/chains";
 import { ReactTyped } from "react-typed";
+import LoadingDots from "@/components/ui/loading-dots";
 interface Convo {
   id: string;
   isAI: boolean;
@@ -65,6 +66,22 @@ export default function Page() {
             )}
           </div>
         ))}
+        {!convos[convos.length - 1].isAI && (
+          <div
+            key={convos.length}
+            className={`flex text-sm justify-start items-center space-x-2`}
+          >
+            <Avatar className="h-9 w-9">
+              <AvatarImage src={"/logo.png"} alt="Avatar" />
+              <AvatarFallback>OM</AvatarFallback>
+            </Avatar>
+            <Card className="max-w-[70%]">
+              <CardContent className="py-3">
+                <LoadingDots />
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
 
       <div className="flex mx-auto py-4 w-[75%]">
