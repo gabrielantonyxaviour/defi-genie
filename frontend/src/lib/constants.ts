@@ -5,6 +5,12 @@ export const WHITELISTED_ADDRESSES = [
   "0x0429A2Da7884CA14E53142988D5845952fE4DF6a",
 ];
 
+export const COINMARKETCAP_IDS = {
+  bnb: 1839,
+  usdc: 3408,
+  usdt: 825,
+};
+
 // type Asset = {
 //   id: string;
 //   name: string;
