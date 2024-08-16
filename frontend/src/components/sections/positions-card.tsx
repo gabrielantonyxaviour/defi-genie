@@ -10,8 +10,13 @@ import { buttonVariants } from "../ui/button";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import PositionsHeader from "../ui/positions-header";
+import { Position } from "@/lib/constants";
 
-export default function PositionsCard() {
+export default function PositionsCard({
+  positions,
+}: {
+  positions: Position[];
+}) {
   return (
     <Card className="col-span-3">
       <CardHeader>
@@ -23,7 +28,7 @@ export default function PositionsCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Positions />
+        <Positions positions={positions} />
       </CardContent>
     </Card>
   );

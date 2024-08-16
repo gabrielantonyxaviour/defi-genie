@@ -32,7 +32,7 @@ export default function BoxCard({
         >
           {title != "Positions" && <span className={` `}>$</span>} {value}
         </div>
-        <p className="text-xs text-muted-foreground">+180.1% from last month</p>
+        <p className="text-xs text-muted-foreground">+0% from last month</p>
       </CardContent>
     </Card>
   );

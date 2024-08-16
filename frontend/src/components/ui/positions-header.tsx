@@ -1,4 +1,4 @@
-import { Switch } from "@radix-ui/react-switch";
+import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { Label } from "./label";
 import Link from "next/link";
