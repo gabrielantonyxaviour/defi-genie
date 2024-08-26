@@ -9,6 +9,9 @@ import { useAccount } from "wagmi";
 import DefaultLanding from "../sections/default-landing";
 import { useState } from "react";
 import PasscodeDialog from "./passcode-dialog";
+import { Link } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { MainNav } from "./navbar";
 
 const sidebarNavItems = [
   {
@@ -33,31 +36,25 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const { status } = useAccount();
   const [passCode, setPasscode] = useState("");
-  const [access, setAccess] = useState(false);
+  const [access, setAccess] = useState(true); // TODO: Turn this off
   return (
     <>
-      <PasscodeDialog
+      {/* <PasscodeDialog
         passcode={passCode}
         setPasscode={setPasscode}
         setAccess={setAccess}
-      />
+      /> */}
       {access && (
         <div className="px-8 w-full h-screen flex flex-col">
           <div className="flex w-full justify-between">
             <div className="flex items-center py-6">
-              <Image src={"/logo.png"} height={50} width={60} alt="Logo" />
-              <h2 className="text-xl font-bold tracking-tight ml-2">
-                Defi.Genie
-              </h2>
+              <Image src={"/logo.png"} height={50} width={50} alt="Logo" />
+              <MainNav className="mx-6" />
             </div>
             <ConnectButton />
           </div>
 
           <div className="flex flex-1 space-x-12 w-full">
-            <aside className="-mx-2 w-1/5">
-              <SidebarNav items={sidebarNavItems} />
-            </aside>
-
             <div className="flex-1 flex flex-col w-full h-full">
               {status != "connected" ? <DefaultLanding /> : children}
             </div>
