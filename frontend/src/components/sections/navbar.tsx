@@ -35,12 +35,6 @@ export function MainNav({
       >
         Positions
       </Link>
-      <Link
-        href="/chat"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Ask AI
-      </Link>
     </nav>
   );
 }
