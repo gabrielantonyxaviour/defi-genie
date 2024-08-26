@@ -16,6 +16,84 @@ export const COINMARKETCAP_IDS: Record<string, number> = {
   eth: 1027,
   matic: 3890,
 };
+export const supportedcoins: Record<string, any> = {
+  weth: {
+    name: "Wrapped Ether",
+    symbol: "WETH",
+    image: "/coins/weth.png",
+    token: {
+      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    },
+  },
+  link: {
+    name: "Chain Link",
+    symbol: "LINK",
+    image: "/coins/link.png",
+    token: {
+      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    },
+  },
+  usdc: {
+    name: "USD Stablecoin",
+    symbol: "USDC",
+    image: "/coins/usdc.png",
+    token: {
+      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    },
+  },
+  usdt: {
+    name: "Tether USD",
+    symbol: "USDT",
+    image: "/coins/usdt.png",
+    token: {
+      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    },
+  },
+  dai: {
+    name: "Dai Stablecoin",
+    symbol: "DAI",
+    image: "/coins/dai.png",
+    token: {
+      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    },
+  },
+  eth: {
+    name: "Ethereum",
+    symbol: "ETH",
+    image: "/coins/ethereum.png",
+  },
+  matic: {
+    name: "Polygon",
+    symbol: "MATIC",
+    image: "/coins/polygon.png",
+  },
+};
+
+export const supportedchains: Record<string, any> = {
+  56: {
+    name: "Binance Smart Chain",
+    chainId: 56,
+    symbol: "BNB",
+    image: "/coins/bnb.png",
+    explorer: "https://bscscan.com/",
+    address: "0x7125e097a72cCf547ED6e9e98bCc09BE3AC61997",
+    approve: "0x50751BD8d7b0a84c422DE96A56426a370F31a42D",
+  },
+  97: {
+    name: "Binance Smart Chain Testnet",
+    chainId: 97,
+    symbol: "tBNB",
+    image: "/coins/bnb.png",
+    explorer: "https://testnet.bscscan.com/",
+    address: "0x7125e097a72cCf547ED6e9e98bCc09BE3AC61997",
+    approve: "0x50751BD8d7b0a84c422DE96A56426a370F31a42D",
+  },
+};
 
 // export const SAMPLE_GRAPH_RESPONSE = {
 //   data: {

@@ -1,3 +1,4 @@
+"use client";
 import Order from "@/components/sections/order";
 import Swap from "@/components/sections/swap";
 import { Button } from "@/components/ui/button";
@@ -160,8 +161,6 @@ export default function PoolPage() {
 
   return (
     <>
-      {" "}
-      <Image src="/logo.png" width={100} height={100} alt="" />
       <Card className="border-none w-[500px] ">
         <CardTitle>
           <div className="flex items-center px-3 py-1">

@@ -55,16 +55,18 @@ export default function Order({
           setToToken={setToToken}
           toLoading={sellingPriceLoading}
         />
-        <div className="flex justify-between items-center my-4">
-          <p>Pay {fromToken.toUpperCase()} at price</p>
+        <div className="flex justify-between items-center ">
+          <p className="text-sm font-medium">
+            Pay {fromToken.toUpperCase()} at price
+          </p>
           <Input
-            className="font-semibold border-none w-[50%] text-right hover:border-none"
+            className="text-sm font-medium border-none w-[50%] my-3 text-right hover:border-none"
             value={sellingPrice}
             onChange={(e) => {
               setSellingPrice(e.target.value);
             }}
           />
-          USD
+          <p className="text-sm font-medium">USD</p>
         </div>
 
         <Button
