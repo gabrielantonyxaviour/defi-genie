@@ -17,11 +17,9 @@ task("deploy-defi", "Deploys the DefiGenie contract")
       "DefiGenie"
     );
 
-    const args = [];
+    const args = ["0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E"];
 
-    const defiGenieContract = await defiGenieContractFactory.deploy(
-      ...args
-    );
+    const defiGenieContract = await defiGenieContractFactory.deploy(...args);
 
     console.log(
       `\nWaiting ${
@@ -35,10 +33,7 @@ task("deploy-defi", "Deploys the DefiGenie contract")
       networks[network.name].confirmations
     );
 
-    console.log(
-      "\nDeployed DefiGenie contract to:",
-      defiGenieContract.address
-    );
+    console.log("\nDeployed DefiGenie contract to:", defiGenieContract.address);
 
     if (network.name === "localFunctionsTestnet") {
       return;

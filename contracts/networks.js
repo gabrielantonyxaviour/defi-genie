@@ -45,6 +45,19 @@ const networks = {
     nativeCurrencySymbol: "ETH",
     mailbox: "0x598facE78a4302f11E3de0bee1894Da0b2Cb71F8",
   },
+  sepolia: {
+    url:
+      "https://eth-sepolia.g.alchemy.com/v2/" +
+      process.env.ALCHEMY_API_KEY_BASE,
+    gasPrice: undefined,
+    nonce: undefined,
+    accounts,
+    verifyApiKey: "GS83CI8QDKIZ62QI4YD56C6PP6N2T9AYNF",
+    chainId: 11155111,
+    confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
+    nativeCurrencySymbol: "ETH",
+    mailbox: "0x598facE78a4302f11E3de0bee1894Da0b2Cb71F8",
+  },
 };
 
 module.exports = {

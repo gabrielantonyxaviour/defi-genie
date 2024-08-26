@@ -14,39 +14,16 @@ const SOLC_SETTINGS = {
   },
 };
 module.exports = {
-  solidity: {
-    compilers: [
-      {
-        version: "0.8.20",
-        settings: SOLC_SETTINGS,
-      },
-      {
-        version: "0.8.7",
-        settings: SOLC_SETTINGS,
-      },
-      {
-        version: "0.7.0",
-        settings: SOLC_SETTINGS,
-      },
-      {
-        version: "0.6.6",
-        settings: SOLC_SETTINGS,
-      },
-      {
-        version: "0.4.24",
-        settings: SOLC_SETTINGS,
-      },
-    ],
-  },
-
+  solidity: "0.7.6",
   networks: {
     ...networks,
   },
   etherscan: {
     apiKey: {
+      sepolia: networks.sepolia.verifyApiKey,
       arbitrumSepolia: networks.arbitrumSepolia.verifyApiKey,
       fhenixTestnet: "UNSET",
-      chilizSpicy: 'routescan'
+      chilizSpicy: "routescan",
     },
     customChains: [
       {
@@ -64,11 +41,13 @@ module.exports = {
           apiURL: "https://api.helium.fhenix.zone",
           browserURL: "https://explorer.helium.fhenix.zone",
         },
-      }, {
+      },
+      {
         network: "chilizSpicy",
         chainId: networks.chilizSpicy.chainId,
         urls: {
-          apiURL: "https://api.routescan.io/v2/network/testnet/evm/88882/etherscan",
+          apiURL:
+            "https://api.routescan.io/v2/network/testnet/evm/88882/etherscan",
           browserURL: "https://testnet.chiliscan.com",
         },
       },

@@ -6,10 +6,15 @@ export const TOKEN_ADDRESSES: Record<string, Address> = {
   usdt: "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
 };
 
-export const COINMARKETCAP_IDS = {
+export const COINMARKETCAP_IDS: Record<string, number> = {
   bnb: 1839,
+  weth: 2396,
+  link: 1975,
   usdc: 3408,
   usdt: 825,
+  dai: 4943,
+  eth: 1027,
+  matic: 3890,
 };
 
 // export const SAMPLE_GRAPH_RESPONSE = {
