@@ -160,7 +160,7 @@ export default function PoolPage() {
   }, [selectedAction]);
 
   return (
-    <>
+    <div className="flex justify-center items-center h-full">
       <Card className="border-none w-[500px] ">
         <CardTitle>
           <div className="flex items-center px-3 py-1">
@@ -228,6 +228,6 @@ export default function PoolPage() {
           />
         )}
       </Card>
-    </>
+    </div>
   );
 }
