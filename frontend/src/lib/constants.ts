@@ -34,16 +34,7 @@ export const supportedcoins: Record<string, any> = {
     image: "/coins/weth.png",
     token: {
       1: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      11155111: "0x5c8b7e2f0b4e2c6c7c4d4f3c4e7f692d2c0a1f5f",
-    },
-  },
-  wrappedBnb: {
-    name: "Wrapped BNB",
-    symbol: "WBNB",
-    image: "/coins/bnb.png",
-    token: {
-      56: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
-      97: "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
+      11155111: "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
     },
   },
   link: {
@@ -54,7 +45,7 @@ export const supportedcoins: Record<string, any> = {
       1: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
       11155111: "0x779877A7B0D9E8603169DdbD7836e478b4624789",
       56: "0x404460C6A5EdE2D891e8297795264fDe62ADBB75",
-      97: "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
+      97: "",
     },
   },
   usdc: {
@@ -62,9 +53,9 @@ export const supportedcoins: Record<string, any> = {
     symbol: "USDC",
     image: "/coins/usdc.png",
     token: {
-      1: "",
+      1: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
       11155111: "0x1c7d4b196cb0c7b01d743fbc6116a902379c7238",
-      56: "",
+      56: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
       97: "",
     },
   },
@@ -73,9 +64,9 @@ export const supportedcoins: Record<string, any> = {
     symbol: "USDT",
     image: "/coins/usdt.png",
     token: {
-      1: "",
+      1: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
       11155111: "0x703bd35f91bc3947aac70b4b0c560bee5f06f84c",
-      56: "",
+      56: "0x55d398326f99059fF775485246999027B3197955",
       97: "",
     },
   },
