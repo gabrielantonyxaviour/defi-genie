@@ -11,6 +11,7 @@ interface SwapProps {
   setFromAmount: (fromAmount: string) => void;
   fromToken: string;
   setFromToken: (fromToken: string) => void;
+  fromBalance: string;
   toToken: string;
   setToToken: (toToken: string) => void;
   toAmount: string;
@@ -32,6 +33,7 @@ export default function Swap({
   toAmount,
   setSlippage,
   slippage,
+  fromBalance,
   toLoading,
   triggerAction,
   openTransaction,
@@ -53,6 +55,7 @@ export default function Swap({
           fromAmount={fromAmount}
           setFromAmount={setFromAmount}
           fromToken={fromToken}
+          fromBalance={fromBalance}
           setFromToken={setFromToken}
           isTestnet={isTestnet}
         />
@@ -72,10 +75,21 @@ export default function Swap({
             triggerAction();
           }}
           disabled={
-            openTransaction || parseFloat(fromAmount) == 0 || fromAmount == ""
+            openTransaction ||
+            parseFloat(fromAmount) == 0 ||
+            fromAmount == "" ||
+            parseFloat(fromAmount) > parseFloat(fromBalance)
           }
         >
-          {openTransaction ? <div className="black-spinner"></div> : "Swap"}
+          {openTransaction ? (
+            <div className="black-spinner"></div>
+          ) : parseFloat(fromAmount) == 0 || fromAmount == "" ? (
+            "Enter Amount"
+          ) : parseFloat(fromAmount) > parseFloat(fromBalance) ? (
+            "Insufficient Funds"
+          ) : (
+            "Swap"
+          )}
         </Button>
         <div className="flex justify-end pt-2 text-muted-foreground space-x-1">
           <p className="font-semibold text-xs">Powered By </p>
