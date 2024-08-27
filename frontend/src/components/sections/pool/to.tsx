@@ -138,7 +138,7 @@ export default function To({
                         alt=""
                         className="rounded-full"
                       />
-                      <p>{isTestnet ? "t" : "" + coin.symbol}</p>
+                      <p>{(isTestnet ? "t" : "") + coin.symbol}</p>
                     </div>
                   </MenubarItem>
                 ))}

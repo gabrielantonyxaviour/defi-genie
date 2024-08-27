@@ -20,7 +20,9 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { useAccount, useWriteContract } from "wagmi";
-import { erc20Abi, parseEther } from "viem";
+import { erc20Abi, parseEther, zeroAddress } from "viem";
+import { waitForTransactionReceipt } from "@wagmi/core";
+import { config } from "@/lib/config";
 export default function Transaction({
   open,
   setOpen,
@@ -140,7 +142,7 @@ export default function Transaction({
           </div>
         </div>
         <DialogFooter>
-          {fromToken != "eth" && fromToken != "matic" && (
+          {fromToken != "nativeEth" && fromToken != "nativeBnb" && (
             <Button
               disabled={
                 completedTxs > 0 || (txStarted == 1 && completedTxs == 0)
@@ -159,6 +161,9 @@ export default function Transaction({
                       BigInt(parseEther(fromAmount)),
                     ],
                   });
+                  const txReceipt = await waitForTransactionReceipt(config, {
+                    hash: tx,
+                  });
                   setApproveTx(tx);
                   setCompletedTxs(completedTxs + 1);
                 } catch (e) {
@@ -167,7 +172,7 @@ export default function Transaction({
                 }
               }}
             >
-              {txStarted == 1 ? (
+              {txStarted == 1 && completedTxs == 0 ? (
                 <div className="black-spinner"></div>
               ) : (
                 `Approve ${supportedcoins[fromToken].symbol}`
@@ -177,8 +182,8 @@ export default function Transaction({
           <Button
             disabled={
               (completedTxs == 0 || (txStarted == 2 && completedTxs == 1)) &&
-              fromToken != "eth" &&
-              fromToken != "matic"
+              fromToken != "nativeEth" &&
+              fromToken != "nativeBnb"
             }
             onClick={async () => {
               setTxStarted(2);
@@ -187,15 +192,21 @@ export default function Transaction({
                   abi: swapRouterAbi,
                   address:
                     supportedchains[(chainId || 11155111).toString()]
-                      .swapRouter,
-                  functionName: "exactInputSingle",
+                      .swapHelper,
+                  functionName: "swap",
                   args: [
-                    [
-                      supportedcoins[fromToken].token[chainId || 11155111],
-                      supportedcoins[toToken].token[chainId || 11155111],
-                      BigInt(parseEther(fromAmount)),
-                    ],
+                    fromToken == "nativeEth" || fromToken == "nativeBnb"
+                      ? zeroAddress
+                      : supportedcoins[fromToken].token[chainId || 11155111],
+                    toToken == "nativeEth"
+                      ? zeroAddress
+                      : supportedcoins[toToken].token[chainId || 11155111],
+                    BigInt(parseEther(fromAmount)),
                   ],
+                  value:
+                    fromToken == "nativeEth"
+                      ? BigInt(parseEther(fromAmount))
+                      : BigInt(0),
                 });
                 setActionTx(tx);
 

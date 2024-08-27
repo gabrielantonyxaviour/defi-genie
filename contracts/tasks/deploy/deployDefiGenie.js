@@ -17,7 +17,10 @@ task("deploy-defi", "Deploys the DefiGenie contract")
       "DefiGenie"
     );
 
-    const args = ["0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E"];
+    const args = [
+      "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+      "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
+    ];
 
     const defiGenieContract = await defiGenieContractFactory.deploy(...args);
 
