@@ -6,8 +6,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import { supportedchains, supportedcoins } from "@/lib/constants";
+import { Button } from "../../ui/button";
+import {
+  supportedchains,
+  supportedcoins,
+  swapRouterAbi,
+} from "@/lib/constants";
 import Image from "next/image";
 import { roundUpToFiveDecimals } from "@/lib/utils";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
@@ -180,14 +184,17 @@ export default function Transaction({
               setTxStarted(2);
               try {
                 const tx = await writeContractAsync({
-                  abi: [],
+                  abi: swapRouterAbi,
                   address:
-                    supportedchains[(chainId || 11155111).toString()].address,
-                  functionName: "swap",
+                    supportedchains[(chainId || 11155111).toString()]
+                      .swapRouter,
+                  functionName: "exactInputSingle",
                   args: [
-                    supportedchains[(chainId || 11155111).toString()].approve,
-                    supportedchains[(chainId || 11155111).toString()].approve,
-                    BigInt(fromAmount),
+                    [
+                      supportedcoins[fromToken].token[chainId || 11155111],
+                      supportedcoins[toToken].token[chainId || 11155111],
+                      BigInt(parseEther(fromAmount)),
+                    ],
                   ],
                 });
                 setActionTx(tx);
