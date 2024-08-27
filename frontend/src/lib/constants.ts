@@ -67,10 +67,10 @@ export const supportedcoins: Record<string, any> = {
     symbol: "ETH",
     image: "/coins/ethereum.png",
   },
-  matic: {
-    name: "Polygon",
-    symbol: "MATIC",
-    image: "/coins/polygon.png",
+  bnb: {
+    name: "Binance Coin",
+    symbol: "BNB",
+    image: "/coins/bnb.png",
   },
 };
 
@@ -99,7 +99,6 @@ export const supportedchains: Record<string, any> = {
     poolDisabled: true,
     isTestnet: true,
   },
-
   1: {
     id: 3,
     name: "Ethereum",

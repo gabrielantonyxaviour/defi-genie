@@ -285,6 +285,8 @@ export default function PoolPage() {
               triggerAction: () => {
                 setOpenTransaction(true);
               },
+              isTestnet:
+                supportedchains[(chainId || 11155111).toString()].isTestnet,
             }}
           />
         ) : (
@@ -303,6 +305,8 @@ export default function PoolPage() {
               triggerAction: () => {
                 setOpenTransaction(true);
               },
+              isTestnet:
+                supportedchains[(chainId || 11155111).toString()].isTestnet,
             }}
           />
         )}

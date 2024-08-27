@@ -18,6 +18,7 @@ interface OrderProps {
   setSellingPrice: (sellingPrice: string) => void;
   sellingPriceLoading: boolean;
   triggerAction: () => void;
+  isTestnet: boolean;
 }
 
 export default function Order({
@@ -32,6 +33,7 @@ export default function Order({
   sellingPrice,
   sellingPriceLoading,
   triggerAction,
+  isTestnet,
 }: OrderProps) {
   const { chainId } = useAccount();
   if (chainId == undefined)
@@ -44,16 +46,20 @@ export default function Order({
     <Card className="border-none w-[500px] ">
       <CardContent className="">
         <From
+          toToken={toToken}
           fromAmount={fromAmount}
           setFromAmount={setFromAmount}
           fromToken={fromToken}
           setFromToken={setFromToken}
+          isTestnet={isTestnet}
         />
         <To
+          fromToken={fromToken}
           toAmount={toAmount}
           toToken={toToken}
           setToToken={setToToken}
           toLoading={sellingPriceLoading}
+          isTestnet={isTestnet}
         />
         <div className="flex justify-between items-center ">
           <p className="text-sm font-medium">

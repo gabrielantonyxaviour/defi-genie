@@ -16,6 +16,7 @@ interface SwapProps {
   slippage: string;
   setSlippage: (slippage: string) => void;
   toLoading: boolean;
+  isTestnet: boolean;
   triggerAction: () => void;
 }
 
@@ -31,6 +32,7 @@ export default function Swap({
   slippage,
   toLoading,
   triggerAction,
+  isTestnet,
 }: SwapProps) {
   const { chainId } = useAccount();
   if (chainId == undefined)
@@ -43,15 +45,19 @@ export default function Swap({
     <Card className="border-none w-[500px] ">
       <CardContent className="">
         <From
+          toToken={toToken}
           fromAmount={fromAmount}
           setFromAmount={setFromAmount}
           fromToken={fromToken}
           setFromToken={setFromToken}
+          isTestnet={isTestnet}
         />
         <To
+          fromToken={fromToken}
           toAmount={toAmount}
           toToken={toToken}
           setToToken={setToToken}
+          isTestnet={isTestnet}
           toLoading={toLoading}
         />
         <Slippage slippage={slippage} setSlippage={setSlippage} />

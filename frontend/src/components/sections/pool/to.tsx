@@ -14,15 +14,19 @@ import { useAccount } from "wagmi";
 import { useState } from "react";
 import Spinner from "@/components/ui/loading";
 export default function To({
+  fromToken,
   toAmount,
   toToken,
   setToToken,
   toLoading,
+  isTestnet,
 }: {
+  fromToken: string;
   toAmount: string;
   toToken: string;
   setToToken: (toToken: string) => void;
   toLoading: boolean;
+  isTestnet: boolean;
 }) {
   const { chainId } = useAccount();
   const [toChevron, setToChevron] = useState(false);
@@ -54,7 +58,9 @@ export default function To({
                   alt=""
                   className="rounded-full"
                 />
-                <p>{supportedcoins[toToken].symbol}</p>
+                <p>{`${isTestnet ? "t" : ""}${
+                  supportedcoins[toToken].symbol
+                }`}</p>
                 {!toChevron ? (
                   <ChevronUp size={20} />
                 ) : (
@@ -84,7 +90,11 @@ export default function To({
                     className="rounded-full"
                   />
                   <p>
-                    {supportedchains[(chainId || 11155111).toString()].symbol}
+                    {isTestnet
+                      ? "t"
+                      : "" +
+                        supportedchains[(chainId || 11155111).toString()]
+                          .symbol}
                   </p>
                 </div>
               </MenubarItem>
@@ -92,6 +102,10 @@ export default function To({
                 .slice(0, -2)
                 .map((coin) => (
                   <MenubarItem
+                    disabled={
+                      coin.symbol.toLocaleLowerCase() == toToken ||
+                      coin.symbol.toLocaleLowerCase() == fromToken
+                    }
                     onClick={() => {
                       setToToken(coin.symbol.toLowerCase());
                       setToChevron(true);
@@ -105,7 +119,7 @@ export default function To({
                         alt=""
                         className="rounded-full"
                       />
-                      <p>{coin.symbol}</p>
+                      <p>{isTestnet ? "t" : "" + coin.symbol}</p>
                     </div>
                   </MenubarItem>
                 ))}
