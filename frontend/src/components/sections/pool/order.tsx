@@ -87,7 +87,7 @@ export default function Order({
           Coming Soon
         </Button>
         <div className="flex justify-end pt-2 text-muted-foreground space-x-1">
-          <p className="font-semibold text-xs">Powererd By </p>
+          <p className="font-semibold text-xs">Powered By </p>
           <Image
             src="/oneinch.jpg"
             width={18}

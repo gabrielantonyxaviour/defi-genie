@@ -76,7 +76,7 @@ export default function Swap({
           {openTransaction ? <div className="black-spinner"></div> : "Swap"}
         </Button>
         <div className="flex justify-end pt-2 text-muted-foreground space-x-1">
-          <p className="font-semibold text-xs">Powererd By </p>
+          <p className="font-semibold text-xs">Powered By </p>
           <Image
             src="/uniswap.png"
             width={18}

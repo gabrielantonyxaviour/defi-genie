@@ -43,7 +43,8 @@ export default function AIComponent({
     {
       id: "1",
       isAI: true,
-      message: "Hello Degen, how can I help you today?",
+      message:
+        "Certainly! I'd be happy to help you explore ways to potentially earn a 10% APY with your portfolio. However, it's important to note that such high yields often come with increased risk. Here are a few DeFi strategies you might consider:\n\n1. Yield farming: Provide liquidity to decentralized exchanges and earn rewards.\n2. Staking: Stake your cryptocurrencies on proof-of-stake networks.\n3. Lending platforms: Lend your crypto assets on platforms like Aave or Compound.\n4. Leveraged yield farming: Use borrowed funds to increase your yield, but be cautious of liquidation risks.\n5. Algorithmic stablecoins: Some offer high yields but carry significant risks.\n\nRemember, always do your own research and only invest what you can afford to lose. The crypto market is highly volatile, and past performance doesn't guarantee future results. Would you like me to elaborate on any specific strategy?",
     },
   ]);
   const [prompt, setPrompt] = useState<string>("");
@@ -69,7 +70,9 @@ export default function AIComponent({
               <CardContent className="py-2 px-3">
                 {convo.isAI ? (
                   <ReactTyped
-                    strings={[convo.message]}
+                    strings={
+                      [convo.message.replace(/\n/g, "<br />")] as string[]
+                    }
                     typeSpeed={15}
                     showCursor={false}
                     onStop={() => {}}

@@ -26,7 +26,6 @@ export const supportedcoins: Record<string, any> = {
       11155111: "0x0000000000000000000000000000000000000000",
     },
   },
-
   nativeBnb: {
     name: "Binance Coin",
     symbol: "BNB",
@@ -89,6 +88,7 @@ export const supportedchains: Record<string, any> = {
     swapHelper: "",
     poolDisabled: false,
     isTestnet: false,
+    stakeDisabled: true,
   },
   97: {
     id: 2,
@@ -101,6 +101,7 @@ export const supportedchains: Record<string, any> = {
     swapRouter: "",
     poolDisabled: true,
     isTestnet: true,
+    stakeDisabled: true,
   },
   1: {
     id: 3,
@@ -113,6 +114,7 @@ export const supportedchains: Record<string, any> = {
     swapHelper: "",
     poolDisabled: false,
     isTestnet: false,
+    stakeDisabled: false,
   },
   11155111: {
     id: 4,
@@ -125,6 +127,7 @@ export const supportedchains: Record<string, any> = {
     swapRouter: "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
     poolDisabled: false,
     isTestnet: true,
+    stakeDisabled: false,
   },
 };
 
