@@ -2,11 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import From from "./from";
 import To from "./to";
-import { useAccount } from "wagmi";
-import Spinner from "../ui/loading";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-interface OrderProps {
+import { useAccount, useSwitchChain } from "wagmi";
+import Slippage from "./slippage";
+import Spinner from "@/components/ui/loading";
+interface SwapProps {
   fromAmount: string;
   setFromAmount: (fromAmount: string) => void;
   fromToken: string;
@@ -14,13 +13,13 @@ interface OrderProps {
   toToken: string;
   setToToken: (toToken: string) => void;
   toAmount: string;
-  sellingPrice: string;
-  setSellingPrice: (sellingPrice: string) => void;
-  sellingPriceLoading: boolean;
+  slippage: string;
+  setSlippage: (slippage: string) => void;
+  toLoading: boolean;
   triggerAction: () => void;
 }
 
-export default function Order({
+export default function Swap({
   fromAmount,
   setFromAmount,
   fromToken,
@@ -28,15 +27,15 @@ export default function Order({
   toToken,
   setToToken,
   toAmount,
-  setSellingPrice,
-  sellingPrice,
-  sellingPriceLoading,
+  setSlippage,
+  slippage,
+  toLoading,
   triggerAction,
-}: OrderProps) {
+}: SwapProps) {
   const { chainId } = useAccount();
   if (chainId == undefined)
     return (
-      <div className="w-[75%] flex flex-col justify-center items-center ">
+      <div className="w-[75%] flex flex-col justify-center items-center">
         <Spinner />
       </div>
     );
@@ -53,22 +52,9 @@ export default function Order({
           toAmount={toAmount}
           toToken={toToken}
           setToToken={setToToken}
-          toLoading={sellingPriceLoading}
+          toLoading={toLoading}
         />
-        <div className="flex justify-between items-center ">
-          <p className="text-sm font-medium">
-            Pay {fromToken.toUpperCase()} at price
-          </p>
-          <Input
-            className="text-sm font-medium border-none w-[50%] my-3 text-right hover:border-none"
-            value={sellingPrice}
-            onChange={(e) => {
-              setSellingPrice(e.target.value);
-            }}
-          />
-          <p className="text-sm font-medium">USD</p>
-        </div>
-
+        <Slippage slippage={slippage} setSlippage={setSlippage} />
         <Button
           variant={"default"}
           className="w-full font-bold"
@@ -76,7 +62,7 @@ export default function Order({
             triggerAction();
           }}
         >
-          Create Limit Order
+          Swap
         </Button>
       </CardContent>
     </Card>

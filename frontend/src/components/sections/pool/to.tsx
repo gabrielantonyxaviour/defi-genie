@@ -12,7 +12,7 @@ import {
 import Image from "next/image";
 import { useAccount } from "wagmi";
 import { useState } from "react";
-import Spinner from "../ui/loading";
+import Spinner from "@/components/ui/loading";
 export default function To({
   toAmount,
   toToken,

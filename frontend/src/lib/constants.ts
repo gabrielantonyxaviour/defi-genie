@@ -76,6 +76,7 @@ export const supportedcoins: Record<string, any> = {
 
 export const supportedchains: Record<string, any> = {
   56: {
+    id: 1,
     name: "Binance Smart Chain",
     chainId: 56,
     symbol: "BNB",
@@ -83,15 +84,80 @@ export const supportedchains: Record<string, any> = {
     explorer: "https://bscscan.com/",
     address: "0x7125e097a72cCf547ED6e9e98bCc09BE3AC61997",
     approve: "0x50751BD8d7b0a84c422DE96A56426a370F31a42D",
+    poolDisabled: false,
+    isTestnet: false,
   },
   97: {
-    name: "Binance Smart Chain Testnet",
+    id: 2,
+    name: "Bsc Testnet",
     chainId: 97,
     symbol: "tBNB",
     image: "/coins/bnb.png",
     explorer: "https://testnet.bscscan.com/",
     address: "0x7125e097a72cCf547ED6e9e98bCc09BE3AC61997",
     approve: "0x50751BD8d7b0a84c422DE96A56426a370F31a42D",
+    poolDisabled: true,
+    isTestnet: true,
+  },
+
+  1: {
+    id: 3,
+    name: "Ethereum",
+    chainId: 11155111,
+    symbol: "ETH",
+    image: "/coins/ethereum.png",
+    explorer: "https://eth-sepolia.blockscout.com/",
+    address: "0x9425ab731bdF86c6E02Cad8Ba4AF0005BE0014d0",
+    approve: "",
+    poolDisabled: false,
+    isTestnet: false,
+  },
+  11155111: {
+    id: 4,
+    name: "Sepolia",
+    chainId: 11155111,
+    symbol: "ETH",
+    image: "/coins/ethereum.png",
+    explorer: "https://eth-sepolia.blockscout.com/",
+    address: "0x9425ab731bdF86c6E02Cad8Ba4AF0005BE0014d0",
+    approve: "",
+    poolDisabled: false,
+    isTestnet: true,
+  },
+};
+
+const home = {
+  56: {
+    native: 231413413,
+    usdc: 231413413,
+    usdt: 3423423,
+    link: 3235246546536,
+    weth: 234234234,
+    dai: 1212234,
+  },
+  97: {
+    native: 231413413,
+    usdc: 231413413,
+    usdt: 3423423,
+    link: 3235246546536,
+    weth: 234234234,
+    dai: 1212234,
+  },
+  1: {
+    native: 231413413,
+    usdc: 231413413,
+    usdt: 3423423,
+    link: 3235246546536,
+    weth: 234234234,
+    dai: 1212234,
+  },
+  11155111: {
+    native: 231413413,
+    usdc: 231413413,
+    usdt: 3423423,
+    link: 3235246546536,
+    weth: 234234234,
+    dai: 1212234,
   },
 };
 

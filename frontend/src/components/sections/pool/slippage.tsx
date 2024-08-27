@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 export default function Slippage({

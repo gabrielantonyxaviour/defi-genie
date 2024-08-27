@@ -1,12 +1,21 @@
 "use client";
-import Order from "@/components/sections/order";
-import Swap from "@/components/sections/swap";
+import Order from "@/components/sections/pool/order";
+import Swap from "@/components/sections/pool/swap";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
+import {
+  Menubar,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+} from "@/components/ui/menubar";
+import { supportedchains } from "@/lib/constants";
 
 import axios from "axios";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useAccount, useSwitchChain } from "wagmi";
 
 interface ClassifyResponse {
@@ -17,7 +26,7 @@ interface ClassifyResponse {
 
 export default function PoolPage() {
   const { status, address, chainId } = useAccount();
-  const { switchChain } = useSwitchChain();
+  const { switchChainAsync, switchChain } = useSwitchChain();
   const [selectedAction, setSelectedAction] = useState(false);
   const [fromAmount, setFromAmount] = useState("0");
   const [fromToken, setFromToken] = useState("usdt");
@@ -36,6 +45,7 @@ export default function PoolPage() {
     action: "",
     params: "",
   });
+  const [chainChevron, setChainChevron] = useState(true);
   const [readyForTrigger, setReadyForTrigger] = useState(false);
   useEffect(() => {
     console.log("Classify Response");
@@ -163,31 +173,93 @@ export default function PoolPage() {
     <div className="flex justify-center items-center h-full">
       <Card className="border-none w-[500px] ">
         <CardTitle>
-          <div className="flex items-center px-3 py-1">
-            <Button
-              variant={"ghost"}
-              className={`hover:bg-transparent  ${
-                !selectedAction
-                  ? "text-primary"
-                  : "text-muted-foreground font-semibold"
-              }`}
-              onClick={async () => {
-                setSelectedAction(false);
+          <div className="flex justify-between items-center px-3 py-1">
+            <div className="flex ">
+              <Button
+                variant={"ghost"}
+                className={`hover:bg-transparent  ${
+                  !selectedAction
+                    ? "text-primary"
+                    : "text-muted-foreground font-semibold"
+                }`}
+                onClick={async () => {
+                  setSelectedAction(false);
+                }}
+              >
+                Swap
+              </Button>
+              <Button
+                variant={"ghost"}
+                className={`hover:bg-transparent  ${
+                  selectedAction
+                    ? "text-primary"
+                    : "text-muted-foreground font-semibold"
+                }`}
+                onClick={() => setSelectedAction(true)}
+              >
+                Limit
+              </Button>
+            </div>
+            <Menubar
+              onClick={() => {
+                setChainChevron(!chainChevron);
               }}
+              className="border-none text-sm"
             >
-              Swap
-            </Button>
-            <Button
-              variant={"ghost"}
-              className={`hover:bg-transparent  ${
-                selectedAction
-                  ? "text-primary"
-                  : "text-muted-foreground font-semibold"
-              }`}
-              onClick={() => setSelectedAction(true)}
-            >
-              Limit
-            </Button>
+              <MenubarMenu>
+                <MenubarTrigger
+                  onClick={() => {
+                    setChainChevron(!chainChevron);
+                  }}
+                >
+                  <div className="flex space-x-2 items-center ">
+                    <Image
+                      src={
+                        supportedchains[(chainId || 11155111).toString()].image
+                      }
+                      width={20}
+                      height={20}
+                      alt=""
+                      className="rounded-full"
+                    />
+                    <p>
+                      {supportedchains[(chainId || 11155111).toString()].name}
+                    </p>
+                    {!chainChevron ? (
+                      <ChevronUp size={20} />
+                    ) : (
+                      <ChevronDown size={20} />
+                    )}
+                  </div>
+                </MenubarTrigger>
+                <MenubarContent>
+                  {Object.values(supportedchains)
+                    .sort((a, b) => a.id - b.id)
+                    .map((coin) => (
+                      <MenubarItem
+                        className=" cursor-pointer w-full"
+                        onClick={async () => {
+                          await switchChainAsync({
+                            chainId: coin.chainId,
+                          });
+                          setChainChevron(true);
+                        }}
+                      >
+                        <div className="flex space-x-2">
+                          <Image
+                            src={coin.image}
+                            width={20}
+                            height={20}
+                            alt=""
+                            className="rounded-full"
+                          />
+                          <p>{coin.name}</p>
+                        </div>
+                      </MenubarItem>
+                    ))}
+                </MenubarContent>
+              </MenubarMenu>
+            </Menubar>
           </div>
         </CardTitle>
         {selectedAction ? (

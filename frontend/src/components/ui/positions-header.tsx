@@ -24,7 +24,7 @@ export default function PositionsHeader() {
         </div>
 
         <Link
-          href={"https://app.uniswap.org/add"}
+          href={"https://app.uniswap.org/add?chain=bnb"}
           target="_blank"
           className={`${buttonVariants({
             variant: "secondary",
