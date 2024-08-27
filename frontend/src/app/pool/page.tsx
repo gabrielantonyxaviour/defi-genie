@@ -58,11 +58,11 @@ export default function PoolPage() {
         const chain = p[0];
 
         const selectedChainId =
-          chain.toLocaleLowerCase() == "matic"
-            ? 80002
-            : chain.toLocaleLowerCase() == "arbitrum"
-            ? 421614
-            : 11155111;
+          chain.toLocaleLowerCase() == "bnb"
+            ? 56
+            : chain.toLocaleLowerCase() == "sepolia"
+            ? 11155111
+            : 1;
         if (selectedChainId != chainId)
           switchChain({
             chainId: selectedChainId,

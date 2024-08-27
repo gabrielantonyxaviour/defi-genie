@@ -65,11 +65,13 @@ export default function From({
             </MenubarTrigger>
             <MenubarContent>
               <MenubarItem
+                disabled={toToken == "nativeEth" || toToken == "nativeBnb"}
                 onClick={() => {
                   setFromToken(
-                    supportedchains[
-                      (chainId || 11155111).toString()
-                    ].symbol.toLowerCase()
+                    supportedchains[(chainId || 11155111).toString()].symbol ==
+                      "ETH"
+                      ? "nativeEth"
+                      : "nativeBnb"
                   );
                   setChevron(true);
                 }}
@@ -85,22 +87,54 @@ export default function From({
                     className="rounded-full"
                   />
                   <p>
-                    {isTestnet
-                      ? "t"
-                      : "" +
+                    {(isTestnet ? "t" : "") +
+                      supportedchains[(chainId || 11155111).toString()].symbol}
+                  </p>
+                </div>
+              </MenubarItem>
+              <MenubarItem
+                disabled={toToken == "wrappedEth" || toToken == "wrappedBnb"}
+                onClick={() => {
+                  setFromToken(
+                    supportedchains[(chainId || 11155111).toString()].symbol ==
+                      "ETH"
+                      ? "wrappedEth"
+                      : "wrappedBnb"
+                  );
+                  setChevron(true);
+                }}
+              >
+                <div className="flex space-x-2">
+                  <Image
+                    src={
+                      supportedcoins[
                         supportedchains[(chainId || 11155111).toString()]
-                          .symbol}
+                          .symbol == "ETH"
+                          ? "wrappedEth"
+                          : "wrappedBnb"
+                      ].image
+                    }
+                    width={20}
+                    height={20}
+                    alt=""
+                    className="rounded-full"
+                  />
+                  <p>
+                    {(isTestnet ? "t" : "") +
+                      supportedcoins[
+                        supportedchains[(chainId || 11155111).toString()]
+                          .symbol == "ETH"
+                          ? "wrappedEth"
+                          : "wrappedBnb"
+                      ].symbol}
                   </p>
                 </div>
               </MenubarItem>
               {Object.values(supportedcoins)
-                .slice(0, -2)
+                .slice(4)
                 .map((coin) => (
                   <MenubarItem
-                    disabled={
-                      coin.symbol.toLocaleLowerCase() == fromToken ||
-                      coin.symbol.toLocaleLowerCase() == toToken
-                    }
+                    disabled={coin.symbol.toLocaleLowerCase() == toToken}
                     onClick={() => {
                       setFromToken(coin.symbol.toLowerCase());
                       setChevron(true);
@@ -114,7 +148,7 @@ export default function From({
                         alt=""
                         className="rounded-full"
                       />
-                      <p>{isTestnet ? "t" : "" + coin.symbol}</p>
+                      <p>{(isTestnet ? "t" : "") + coin.symbol}</p>
                     </div>
                   </MenubarItem>
                 ))}

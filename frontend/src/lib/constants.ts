@@ -7,25 +7,43 @@ export const TOKEN_ADDRESSES: Record<string, Address> = {
 };
 
 export const COINMARKETCAP_IDS: Record<string, number> = {
-  bnb: 1839,
-  weth: 2396,
+  nativeBnb: 1839,
+  wrappedBnb: 7192,
+  wrappedEth: 2396,
   link: 1975,
   usdc: 3408,
   usdt: 825,
-  dai: 4943,
-  eth: 1027,
-  matic: 3890,
+  nativeEth: 1027,
 };
+
 export const supportedcoins: Record<string, any> = {
-  weth: {
-    name: "Wrapped Ether",
+  nativeEth: {
+    name: "Ethereum",
+    symbol: "ETH",
+    image: "/coins/ethereum.png",
+  },
+
+  nativeBnb: {
+    name: "Binance Coin",
+    symbol: "BNB",
+    image: "/coins/bnb.png",
+  },
+  wrappedEth: {
+    name: "Wrapped Ethereum",
     symbol: "WETH",
     image: "/coins/weth.png",
     token: {
-      1: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-      11155111: "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
-      56: "",
-      97: "",
+      1: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      11155111: "0x5c8b7e2f0b4e2c6c7c4d4f3c4e7f692d2c0a1f5f",
+    },
+  },
+  wrappedBnb: {
+    name: "Wrapped BNB",
+    symbol: "WBNB",
+    image: "/coins/bnb.png",
+    token: {
+      56: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+      97: "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
     },
   },
   link: {
@@ -45,7 +63,7 @@ export const supportedcoins: Record<string, any> = {
     image: "/coins/usdc.png",
     token: {
       1: "",
-      11155111: "",
+      11155111: "0x1c7d4b196cb0c7b01d743fbc6116a902379c7238",
       56: "",
       97: "",
     },
@@ -56,31 +74,10 @@ export const supportedcoins: Record<string, any> = {
     image: "/coins/usdt.png",
     token: {
       1: "",
-      11155111: "",
+      11155111: "0x703bd35f91bc3947aac70b4b0c560bee5f06f84c",
       56: "",
       97: "",
     },
-  },
-  dai: {
-    name: "Dai Stablecoin",
-    symbol: "DAI",
-    image: "/coins/dai.png",
-    token: {
-      1: "",
-      11155111: "",
-      56: "",
-      97: "",
-    },
-  },
-  eth: {
-    name: "Ethereum",
-    symbol: "ETH",
-    image: "/coins/ethereum.png",
-  },
-  bnb: {
-    name: "Binance Coin",
-    symbol: "BNB",
-    image: "/coins/bnb.png",
   },
 };
 
@@ -90,6 +87,7 @@ export const supportedchains: Record<string, any> = {
     name: "Binance Smart Chain",
     chainId: 56,
     symbol: "BNB",
+    wrapped: "WBNB",
     image: "/coins/bnb.png",
     explorer: "https://bscscan.com/",
     address: "0x7125e097a72cCf547ED6e9e98bCc09BE3AC61997",
@@ -101,7 +99,7 @@ export const supportedchains: Record<string, any> = {
     id: 2,
     name: "Bsc Testnet",
     chainId: 97,
-    symbol: "tBNB",
+    symbol: "BNB",
     image: "/coins/bnb.png",
     explorer: "https://testnet.bscscan.com/",
     address: "0x7125e097a72cCf547ED6e9e98bCc09BE3AC61997",
