@@ -1,6 +1,7 @@
 "use client";
 import Order from "@/components/sections/pool/order";
 import Swap from "@/components/sections/pool/swap";
+import Transaction from "@/components/sections/transaction";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import {
@@ -305,12 +306,22 @@ export default function PoolPage() {
               triggerAction: () => {
                 setOpenTransaction(true);
               },
+              openTransaction,
               isTestnet:
                 supportedchains[(chainId || 11155111).toString()].isTestnet,
             }}
           />
         )}
       </Card>
+      <Transaction
+        open={openTransaction}
+        setOpen={setOpenTransaction}
+        action={"swap"}
+        fromAmount={fromAmount}
+        fromToken={fromToken}
+        toToken={toToken}
+        toAmount={toAmount}
+      />
     </div>
   );
 }

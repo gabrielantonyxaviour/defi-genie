@@ -19,6 +19,7 @@ interface SwapProps {
   toLoading: boolean;
   isTestnet: boolean;
   triggerAction: () => void;
+  openTransaction: boolean;
 }
 
 export default function Swap({
@@ -33,6 +34,7 @@ export default function Swap({
   slippage,
   toLoading,
   triggerAction,
+  openTransaction,
   isTestnet,
 }: SwapProps) {
   const { chainId } = useAccount();
@@ -69,8 +71,9 @@ export default function Swap({
           onClick={() => {
             triggerAction();
           }}
+          disabled={openTransaction || parseFloat(fromAmount) == 0}
         >
-          Swap
+          {openTransaction ? <div className="black-spinner"></div> : "Swap"}
         </Button>
         <div className="flex justify-end pt-2 text-muted-foreground space-x-1">
           <p className="font-semibold text-xs">Powererd By </p>
