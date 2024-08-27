@@ -28,7 +28,7 @@ export default function From({
   isTestnet: boolean;
 }) {
   const { chainId } = useAccount();
-  const [chevron, setChevron] = useState(false);
+  const [chevron, setChevron] = useState(true);
   return (
     <Card className="w-full  border-none bg-zinc-950">
       <CardTitle>
@@ -122,7 +122,7 @@ export default function From({
           </MenubarMenu>
         </Menubar>
         <Input
-          className="font-semibold border-none w-[50%] text-right hover:border-none"
+          className="font-semibold  border-none w-[50%] text-right hover:border-none"
           value={fromAmount}
           onChange={(e) => {
             const decimalRegex = /^\d+(\.\d*)?$/;
@@ -132,10 +132,9 @@ export default function From({
         />
       </CardContent>
 
-      <CardFooter className="px-2">
-        <p className="text-xs text-muted-foreground">
-          {supportedcoins[fromToken].name}
-        </p>
+      <CardFooter className="px-2 flex justify-between text-muted-foreground">
+        <p className="text-xs ">{supportedcoins[fromToken].name}</p>
+        <p className="text-end text-xs font-medium">Balance: {} </p>
       </CardFooter>
     </Card>
   );

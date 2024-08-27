@@ -22,8 +22,10 @@ export const supportedcoins: Record<string, any> = {
     symbol: "WETH",
     image: "/coins/weth.png",
     token: {
-      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      1: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      11155111: "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+      56: "",
+      97: "",
     },
   },
   link: {
@@ -31,8 +33,10 @@ export const supportedcoins: Record<string, any> = {
     symbol: "LINK",
     image: "/coins/link.png",
     token: {
-      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      1: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+      11155111: "0x779877A7B0D9E8603169DdbD7836e478b4624789",
+      56: "0x404460C6A5EdE2D891e8297795264fDe62ADBB75",
+      97: "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
     },
   },
   usdc: {
@@ -40,8 +44,10 @@ export const supportedcoins: Record<string, any> = {
     symbol: "USDC",
     image: "/coins/usdc.png",
     token: {
-      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      1: "",
+      11155111: "",
+      56: "",
+      97: "",
     },
   },
   usdt: {
@@ -49,8 +55,10 @@ export const supportedcoins: Record<string, any> = {
     symbol: "USDT",
     image: "/coins/usdt.png",
     token: {
-      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      1: "",
+      11155111: "",
+      56: "",
+      97: "",
     },
   },
   dai: {
@@ -58,8 +66,10 @@ export const supportedcoins: Record<string, any> = {
     symbol: "DAI",
     image: "/coins/dai.png",
     token: {
-      56: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      97: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      1: "",
+      11155111: "",
+      56: "",
+      97: "",
     },
   },
   eth: {

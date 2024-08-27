@@ -29,7 +29,7 @@ export default function To({
   isTestnet: boolean;
 }) {
   const { chainId } = useAccount();
-  const [toChevron, setToChevron] = useState(false);
+  const [toChevron, setToChevron] = useState(true);
   return (
     <Card className="w-full border-white bg-zinc-950">
       <CardTitle>
