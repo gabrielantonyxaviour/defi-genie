@@ -103,7 +103,7 @@ export const supportedchains: Record<string, any> = {
   1: {
     id: 3,
     name: "Ethereum",
-    chainId: 11155111,
+    chainId: 1,
     symbol: "ETH",
     image: "/coins/ethereum.png",
     explorer: "https://eth-sepolia.blockscout.com/",

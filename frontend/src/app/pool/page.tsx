@@ -169,6 +169,12 @@ export default function PoolPage() {
     }
   }, [selectedAction]);
 
+  useEffect(() => {
+    if (chainId == 97) {
+      switchChainAsync({ chainId: 56 });
+    }
+  }, [chainId]);
+
   return (
     <div className="flex justify-center items-center h-full">
       <Card className="border-none w-[500px] ">
@@ -237,6 +243,7 @@ export default function PoolPage() {
                     .sort((a, b) => a.id - b.id)
                     .map((coin) => (
                       <MenubarItem
+                        disabled={coin.poolDisabled}
                         className=" cursor-pointer w-full"
                         onClick={async () => {
                           await switchChainAsync({
