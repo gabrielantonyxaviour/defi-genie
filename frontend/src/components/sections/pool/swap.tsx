@@ -44,7 +44,8 @@ export default function Swap({
     );
   return (
     <Card className="border-none w-[500px] ">
-      <CardContent className="">
+      <CardContent className="relative ">
+        {/* <div className="absolute bg-white w-[10px] h-[10px] left-[50%] top-[50%]"></div> */}
         <From
           toToken={toToken}
           fromAmount={fromAmount}

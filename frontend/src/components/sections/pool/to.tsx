@@ -31,9 +31,9 @@ export default function To({
   const { chainId } = useAccount();
   const [toChevron, setToChevron] = useState(true);
   return (
-    <Card className="w-full border-white bg-zinc-950">
-      <CardTitle>
-        <p className="text-xs text-muted-foreground font-semibold p-2">
+    <Card className="w-full pt-4 border-muted-background bg-zinc-950">
+      <CardTitle className="">
+        <p className="text-xs text-muted-foreground font-semibold px-2">
           You receive
         </p>
       </CardTitle>

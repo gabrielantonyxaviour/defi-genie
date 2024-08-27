@@ -30,9 +30,9 @@ export default function From({
   const { chainId } = useAccount();
   const [chevron, setChevron] = useState(true);
   return (
-    <Card className="w-full  border-none bg-zinc-950">
+    <Card className="w-full pt-2  border-none bg-zinc-950 ">
       <CardTitle>
-        <p className="text-xs text-muted-foreground font-semibold p-2">
+        <p className="text-xs text-muted-foreground font-semibold px-2">
           You pay
         </p>
       </CardTitle>
@@ -156,7 +156,7 @@ export default function From({
           </MenubarMenu>
         </Menubar>
         <Input
-          className="font-semibold  border-none w-[50%] text-right hover:border-none"
+          className="font-semibold focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0 bg-transparent border-none w-[50%] text-right "
           value={fromAmount}
           onChange={(e) => {
             const decimalRegex = /^\d+(\.\d*)?$/;
@@ -166,7 +166,7 @@ export default function From({
         />
       </CardContent>
 
-      <CardFooter className="px-2 flex justify-between text-muted-foreground">
+      <CardFooter className="pb-4 px-2 flex justify-between text-muted-foreground">
         <p className="text-xs ">{supportedcoins[fromToken].name}</p>
         <p className="text-end text-xs font-medium">Balance: {} </p>
       </CardFooter>
