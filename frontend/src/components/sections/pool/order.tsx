@@ -5,6 +5,7 @@ import To from "./to";
 import { useAccount } from "wagmi";
 import Spinner from "@/components/ui/loading";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
 
 interface OrderProps {
   fromAmount: string;
@@ -81,9 +82,21 @@ export default function Order({
           onClick={() => {
             triggerAction();
           }}
+          disabled={true}
         >
-          Create Limit Order
+          Coming Soon
         </Button>
+        <div className="flex justify-end pt-2 text-muted-foreground space-x-1">
+          <p className="font-semibold text-xs">Powererd By </p>
+          <Image
+            src="/oneinch.jpg"
+            width={18}
+            height={20}
+            alt=""
+            className="rounded-full"
+          />
+          <p className="font-semibold text-xs">1inch </p>
+        </div>
       </CardContent>
     </Card>
   );

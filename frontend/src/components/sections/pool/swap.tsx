@@ -5,6 +5,7 @@ import To from "./to";
 import { useAccount, useSwitchChain } from "wagmi";
 import Slippage from "./slippage";
 import Spinner from "@/components/ui/loading";
+import Image from "next/image";
 interface SwapProps {
   fromAmount: string;
   setFromAmount: (fromAmount: string) => void;
@@ -70,6 +71,17 @@ export default function Swap({
         >
           Swap
         </Button>
+        <div className="flex justify-end pt-2 text-muted-foreground space-x-1">
+          <p className="font-semibold text-xs">Powererd By </p>
+          <Image
+            src="/uniswap.png"
+            width={18}
+            height={20}
+            alt=""
+            className="rounded-full bg-white"
+          />
+          <p className="font-semibold text-xs">Uniswap </p>
+        </div>
       </CardContent>
     </Card>
   );
