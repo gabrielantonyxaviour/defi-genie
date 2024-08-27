@@ -9,12 +9,9 @@ task("swap", "Swaps tokens").setAction(async (taskArgs) => {
     signer
   );
   const response = await core.swap(
-    "0x0000000000000000000000000000000000000000",
     "0x779877A7B0D9E8603169DdbD7836e478b4624789",
-    "1000000000000000",
-    {
-      value: ethers.utils.parseEther("0.001"),
-    }
+    "0x0000000000000000000000000000000000000000",
+    "1000000000000000"
   );
   const receipt = await response.wait();
   console.log(receipt);

@@ -41,7 +41,7 @@ contract DefiGenie {
                     tokenIn: tokenIn,
                     tokenOut: address(wrapped),
                     fee: feeTier,
-                    recipient: msg.sender,
+                    recipient: address(this),
                     amountIn: amountIn,
                     amountOutMinimum: 0,
                     sqrtPriceLimitX96: 0
@@ -52,9 +52,9 @@ contract DefiGenie {
                 require(success, "ETH transfer failed");
             }
         }else{
-            wrapped.deposit{value: msg.value}();
-            TransferHelper.safeApprove(address(wrapped), address(swapRouter), amountIn);
             if(tokenOut!=address(0)){
+                wrapped.deposit{value: msg.value}();
+                TransferHelper.safeApprove(address(wrapped), address(swapRouter), amountIn);
                 params = ISwapRouter.ExactInputSingleParams({
                     tokenIn: address(wrapped),
                     tokenOut: tokenOut,
@@ -66,19 +66,7 @@ contract DefiGenie {
                 });
                 amountOut = swapRouter.exactInputSingle(params);
             }else{
-                params = ISwapRouter.ExactInputSingleParams({
-                    tokenIn: address(wrapped),
-                    tokenOut: address(wrapped),
-                    fee: feeTier,
-                    recipient: msg.sender,
-                    amountIn: amountIn,
-                    amountOutMinimum: 0,
-                    sqrtPriceLimitX96: 0
-                });
-                amountOut = swapRouter.exactInputSingle(params);
-                wrapped.withdraw(amountOut);
-                (bool success, ) = msg.sender.call{value: amountOut}("");
-                require(success, "ETH transfer failed");
+                amountOut = amountIn;
             }
         }
     }
