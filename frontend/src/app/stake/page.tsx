@@ -6,15 +6,35 @@ import Stake from "@/components/sections/stake/stake";
 import StakeTransaction from "@/components/sections/stake/transaction";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import ConnectButton from "@/components/ui/connect-button";
 import Image from "next/image";
-import { useState } from "react";
-import { useAccount, useBalance } from "wagmi";
+import { useEffect, useState } from "react";
+import { useAccount, useBalance, useSwitchChain } from "wagmi";
 
 export default function StakePage() {
   const [stakeAmount, setStakeAmount] = useState("0");
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
+  const { switchChain } = useSwitchChain();
   const { data } = useBalance({ address });
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (chainId == 56 || chainId == 97) switchChain({ chainId: 11155111 });
+  }, [chainId]);
+
+  if (chainId == 56 || chainId == 97)
+    return (
+      <div className="flex flex-col space-y-4 justify-center items-center my-auto">
+        <p className="text-lg font-semibold">
+          Please switch your chain to{" "}
+          <span className="text-primary">Stake</span>
+        </p>
+        <div className="flex flex-col items-center">
+          <ConnectButton />
+        </div>
+      </div>
+    );
+
   return (
     <div className="flex justify-center items-center h-full">
       <Card className="border-none w-[500px] ">

@@ -73,7 +73,11 @@ export default function ConnectButton() {
               .sort((a, b) => a.id - b.id)
               .map((coin) => (
                 <MenubarItem
-                  disabled={pathname == "/pool" && coin.chainId == 97}
+                  disabled={
+                    (pathname == "/pool" && coin.chainId == 97) ||
+                    (pathname == "/stake" &&
+                      (coin.chainId == 56 || coin.chainId == 97))
+                  }
                   className=" cursor-pointer w-full"
                   onClick={async () => {
                     await switchChainAsync({
