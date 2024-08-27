@@ -17,6 +17,8 @@ contract DefiGenie {
         swapRouter = _swapRouter;
     }
 
+    event ArmountOut(uint256 amountOut);
+
     function swap(address tokenIn, address tokenOut, uint256 amountIn) external payable returns (uint256 amountOut) {
         ISwapRouter.ExactInputSingleParams memory params;
         
@@ -41,15 +43,12 @@ contract DefiGenie {
                     tokenIn: tokenIn,
                     tokenOut: address(wrapped),
                     fee: feeTier,
-                    recipient: address(this),
+                    recipient: msg.sender,
                     amountIn: amountIn,
                     amountOutMinimum: 0,
                     sqrtPriceLimitX96: 0
                 });
                 amountOut = swapRouter.exactInputSingle(params);
-                wrapped.withdraw(amountOut);
-                (bool success, ) = msg.sender.call{value: amountOut}("");
-                require(success, "ETH transfer failed");
             }
         }else{
             if(tokenOut!=address(0)){

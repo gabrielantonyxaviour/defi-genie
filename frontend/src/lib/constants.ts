@@ -124,7 +124,7 @@ export const supportedchains: Record<string, any> = {
     symbol: "ETH",
     image: "/coins/ethereum.png",
     explorer: "https://sepolia.etherscan.io/",
-    swapHelper: "0x2374a83e6d6a60ca401459e3d4a7dcD1eFEA74AD",
+    swapHelper: "0x17d4385317be101707E483659736e4C200E2E640",
     swapRouter: "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
     stake: "0xfbbe4d65bd61b778161ed71ec9416988ee21e911",
     poolDisabled: false,
