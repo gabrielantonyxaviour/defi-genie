@@ -7,16 +7,54 @@ import StakeTransaction from "@/components/sections/stake/transaction";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import ConnectButton from "@/components/ui/connect-button";
+import { config } from "@/lib/config";
+import { supportedchains } from "@/lib/constants";
+import { roundUpToFiveDecimals } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useAccount, useBalance, useSwitchChain } from "wagmi";
+import { formatEther, parseEther } from "viem";
+import { useAccount, useBalance, useReadContract, useSwitchChain } from "wagmi";
 
 export default function StakePage() {
   const [stakeAmount, setStakeAmount] = useState("0");
+  const [stoneAmount, setStoneAmount] = useState("0");
   const { address, chainId } = useAccount();
   const { switchChain } = useSwitchChain();
   const { data } = useBalance({ address });
   const [open, setOpen] = useState(false);
+  const { data: sharePrice } = useReadContract({
+    config,
+    chainId: chainId as any,
+    functionName: "currentSharePrice",
+    address: supportedchains[chainId as any].stake,
+    args: [],
+    abi: [
+      {
+        inputs: [],
+        name: "currentSharePrice",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ],
+  });
+
+  useEffect(() => {
+    setStoneAmount(
+      roundUpToFiveDecimals(
+        (
+          parseFloat(stakeAmount) /
+          parseFloat(formatEther(sharePrice || BigInt("0")))
+        ).toString()
+      )
+    );
+  }, [sharePrice, stakeAmount]);
 
   useEffect(() => {
     if (chainId == 56 || chainId == 97) switchChain({ chainId: 11155111 });
@@ -47,19 +85,25 @@ export default function StakePage() {
             balance={data?.formatted || "0"}
           />
 
-          <Receive stakeAmount={stakeAmount} />
+          <Receive
+            stonePrice={formatEther(sharePrice || BigInt("0"))}
+            stoneAmount={stoneAmount}
+          />
           <div className="px-4">
             <Button
               className="w-full mt-3 font-bold text-sm"
               disabled={
-                parseFloat(stakeAmount) > parseFloat(data?.formatted || "0")
+                parseFloat(stakeAmount) == 0.0 ||
+                parseFloat(stakeAmount) >= parseFloat(data?.formatted || "0")
               }
               onClick={() => {
                 setOpen(true);
               }}
             >
-              {parseFloat(stakeAmount) > parseFloat(data?.formatted || "0")
+              {parseFloat(stakeAmount) >= parseFloat(data?.formatted || "0")
                 ? "Insufficient Balance"
+                : parseFloat(stakeAmount) == 0.0
+                ? "Enter Amount to Stake"
                 : "Stake"}
             </Button>
           </div>
@@ -78,6 +122,7 @@ export default function StakePage() {
       </Card>
       <StakeTransaction
         stakeAmount={stakeAmount}
+        stoneAmount={stoneAmount}
         open={open}
         setOpen={setOpen}
       />

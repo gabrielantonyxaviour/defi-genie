@@ -17,20 +17,23 @@ import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { parseEther } from "viem";
 import { useAccount, useWriteContract } from "wagmi";
-
+import "@/styles/spinner.css";
 export default function StakeTransaction({
   stakeAmount,
   open,
   setOpen,
+  stoneAmount,
 }: {
   stakeAmount: string;
+  stoneAmount: string;
   open: boolean;
   setOpen: (open: boolean) => void;
 }) {
   const [actionTx, setActionTx] = useState("");
   const { toast } = useToast();
-  const { chainId, address } = useAccount();
+  const { chainId } = useAccount();
   const { writeContractAsync } = useWriteContract();
   const [txStarted, setTxStarted] = useState(false);
 
@@ -95,44 +98,49 @@ export default function StakeTransaction({
               alt="coin"
               className="mx-auto rounded-full"
             />
-            <p>{roundUpToFiveDecimals(stakeAmount)} STONE</p>
+            <p>{roundUpToFiveDecimals(stoneAmount)} STONE</p>
           </div>
         </div>
         <DialogFooter>
           <Button
             disabled={txStarted}
             onClick={async () => {
-              //   setTxStarted(2);
-              //   try {
-              //     const tx = await writeContractAsync({
-              //       abi: swapRouterAbi,
-              //       address:
-              //         supportedchains[(chainId || 11155111).toString()]
-              //           .swapHelper,
-              //       functionName: "swap",
-              //       args: [
-              //         fromToken == "nativeEth" || fromToken == "nativeBnb"
-              //           ? zeroAddress
-              //           : supportedcoins[fromToken].token[chainId || 11155111],
-              //         toToken == "nativeEth"
-              //           ? zeroAddress
-              //           : supportedcoins[toToken].token[chainId || 11155111],
-              //         BigInt(parseEther(fromAmount)),
-              //       ],
-              //       value:
-              //         fromToken == "nativeEth"
-              //           ? BigInt(parseEther(fromAmount))
-              //           : BigInt(0),
-              //     });
-              //     setActionTx(tx);
-              //     setCompletedTxs(completedTxs + 1);
-              //   } catch (e) {
-              //     setTxStarted(1);
-              //     console.log(e);
-              //   }
+              setTxStarted(true);
+              try {
+                const tx = await writeContractAsync({
+                  abi: [
+                    {
+                      inputs: [],
+                      name: "deposit",
+                      outputs: [
+                        {
+                          internalType: "uint256",
+                          name: "mintAmount",
+                          type: "uint256",
+                        },
+                      ],
+                      stateMutability: "payable",
+                      type: "function",
+                    },
+                  ],
+                  address:
+                    supportedchains[(chainId || 11155111).toString()].stake,
+                  functionName: "deposit",
+                  args: [],
+                  value: BigInt(parseEther(stakeAmount)),
+                });
+                setActionTx(tx);
+              } catch (e) {
+                console.log(e);
+                setTxStarted(false);
+              }
             }}
           >
-            Deposit Stake
+            {txStarted ? (
+              <div className="black-spinner"></div>
+            ) : (
+              `Deposit Stake`
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
