@@ -71,7 +71,9 @@ export default function Swap({
           onClick={() => {
             triggerAction();
           }}
-          disabled={openTransaction || parseFloat(fromAmount) == 0}
+          disabled={
+            openTransaction || parseFloat(fromAmount) == 0 || fromAmount == ""
+          }
         >
           {openTransaction ? <div className="black-spinner"></div> : "Swap"}
         </Button>

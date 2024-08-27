@@ -19,50 +19,116 @@ contract DefiGenie {
 
     function swap(address tokenIn, address tokenOut, uint256 amountIn) external payable returns (uint256 amountOut) {
         ISwapRouter.ExactInputSingleParams memory params;
-        if (tokenIn == address(0)) {
-            wrapped.deposit{value: msg.value}();
-            TransferHelper.safeApprove(address(wrapped), address(swapRouter), amountIn);
-            params = ISwapRouter.ExactInputSingleParams({
-                tokenIn: address(wrapped),
-                tokenOut: tokenOut,
-                fee: feeTier,
-                recipient: msg.sender,
-                deadline: block.timestamp,
-                amountIn: amountIn,
-                amountOutMinimum: 0,
-                sqrtPriceLimitX96: 0
-            });
-            amountOut = swapRouter.exactInputSingle(params);
-        } else {
+        
+        if(tokenIn!=address(0))
+        {
             TransferHelper.safeTransferFrom(tokenIn, msg.sender, address(this), amountIn);
-            if(tokenOut==address(0)){
-                params = ISwapRouter.ExactInputSingleParams({
-                    tokenIn: tokenIn,
-                    tokenOut: address(wrapped),
-                    fee: feeTier,
-                    recipient: msg.sender,
-                    deadline: block.timestamp,
-                    amountIn: amountIn,
-                    amountOutMinimum: 0,
-                    sqrtPriceLimitX96: 0
-                });
-                amountOut = swapRouter.exactInputSingle(params);
-                (bool success, ) = msg.sender.call{value: amountOut}("");
-                require(success, "ETH transfer failed");
-                amountOut = amountOut;
-            }else{
+            TransferHelper.safeApprove(tokenIn, address(swapRouter), amountIn);
+
+            if(tokenOut!=address(0)){
                 params = ISwapRouter.ExactInputSingleParams({
                     tokenIn: tokenIn,
                     tokenOut: tokenOut,
                     fee: feeTier,
                     recipient: msg.sender,
-                    deadline: block.timestamp,
                     amountIn: amountIn,
                     amountOutMinimum: 0,
                     sqrtPriceLimitX96: 0
                 });
                 amountOut = swapRouter.exactInputSingle(params);
+            }else{
+                params = ISwapRouter.ExactInputSingleParams({
+                    tokenIn: tokenIn,
+                    tokenOut: address(wrapped),
+                    fee: feeTier,
+                    recipient: msg.sender,
+                    amountIn: amountIn,
+                    amountOutMinimum: 0,
+                    sqrtPriceLimitX96: 0
+                });
+                amountOut = swapRouter.exactInputSingle(params);
+                wrapped.withdraw(amountOut);
+                (bool success, ) = msg.sender.call{value: amountOut}("");
+                require(success, "ETH transfer failed");
+            }
+        }else{
+            wrapped.deposit{value: msg.value}();
+            TransferHelper.safeApprove(address(wrapped), address(swapRouter), amountIn);
+            if(tokenOut!=address(0)){
+                params = ISwapRouter.ExactInputSingleParams({
+                    tokenIn: address(wrapped),
+                    tokenOut: tokenOut,
+                    fee: feeTier,
+                    recipient: msg.sender,
+                    amountIn: amountIn,
+                    amountOutMinimum: 0,
+                    sqrtPriceLimitX96: 0
+                });
+                amountOut = swapRouter.exactInputSingle(params);
+            }else{
+                params = ISwapRouter.ExactInputSingleParams({
+                    tokenIn: address(wrapped),
+                    tokenOut: address(wrapped),
+                    fee: feeTier,
+                    recipient: msg.sender,
+                    amountIn: amountIn,
+                    amountOutMinimum: 0,
+                    sqrtPriceLimitX96: 0
+                });
+                amountOut = swapRouter.exactInputSingle(params);
+                wrapped.withdraw(amountOut);
+                (bool success, ) = msg.sender.call{value: amountOut}("");
+                require(success, "ETH transfer failed");
             }
         }
     }
+
+    // function swap(address tokenIn, address tokenOut, uint256 amountIn) external payable returns (uint256 amountOut) {
+    //     ISwapRouter.ExactInputSingleParams memory params;
+    //     if (tokenIn == address(0)) {
+    //         wrapped.deposit{value: msg.value}();
+    //         TransferHelper.safeApprove(address(wrapped), address(swapRouter), amountIn);
+    //         params = ISwapRouter.ExactInputSingleParams({
+    //             tokenIn: address(wrapped),
+    //             tokenOut: tokenOut,
+    //             fee: feeTier,
+    //             recipient: msg.sender,
+    //             deadline: block.timestamp,
+    //             amountIn: amountIn,
+    //             amountOutMinimum: 0,
+    //             sqrtPriceLimitX96: 0
+    //         });
+    //         amountOut = swapRouter.exactInputSingle(params);
+    //     } else {
+    //         TransferHelper.safeTransferFrom(tokenIn, msg.sender, address(this), amountIn);
+    //         if(tokenOut==address(0)){
+    //             params = ISwapRouter.ExactInputSingleParams({
+    //                 tokenIn: tokenIn,
+    //                 tokenOut: address(wrapped),
+    //                 fee: feeTier,
+    //                 recipient: msg.sender,
+    //                 deadline: block.timestamp,
+    //                 amountIn: amountIn,
+    //                 amountOutMinimum: 0,
+    //                 sqrtPriceLimitX96: 0
+    //             });
+    //             amountOut = swapRouter.exactInputSingle(params);
+    //             (bool success, ) = msg.sender.call{value: amountOut}("");
+    //             require(success, "ETH transfer failed");
+    //             amountOut = amountOut;
+    //         }else{
+    //             params = ISwapRouter.ExactInputSingleParams({
+    //                 tokenIn: tokenIn,
+    //                 tokenOut: tokenOut,
+    //                 fee: feeTier,
+    //                 recipient: msg.sender,
+    //                 deadline: block.timestamp,
+    //                 amountIn: amountIn,
+    //                 amountOutMinimum: 0,
+    //                 sqrtPriceLimitX96: 0
+    //             });
+    //             amountOut = swapRouter.exactInputSingle(params);
+    //         }
+    //     }
+    // }
 }
