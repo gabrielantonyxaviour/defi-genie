@@ -117,7 +117,7 @@ export const supportedchains: Record<string, any> = {
     image: "/coins/bnb.png",
     explorer: "https://bscscan.com/",
     swapRouter: "0xB971eF87ede563556b2ED4b1C0b0019111Dd85d2",
-    swapHelper: "", // TODO: Add deployment
+    swapHelper: "0xFfdFdF0bF73D09B5aF6EF7E8B3a498F6BC3524b5",
     poolDisabled: false,
     isTestnet: false,
     stakeDisabled: true,

@@ -2,7 +2,7 @@ require("@chainlink/env-enc").config();
 
 const DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS = 3;
 
-const PRIVATE_KEY = process.env.TEST_PRIVATE_KEY;
+const PRIVATE_KEY = process.env.MAINNET_PRIVATE_KEY;
 
 const accounts = [];
 if (PRIVATE_KEY) {
@@ -57,6 +57,26 @@ const networks = {
     confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
     nativeCurrencySymbol: "ETH",
     mailbox: "0x598facE78a4302f11E3de0bee1894Da0b2Cb71F8",
+  },
+  bsc: {
+    url: "https://binance.llamarpc.com",
+    gasPrice: undefined,
+    nonce: undefined,
+    accounts,
+    verifyApiKey: "UNSET",
+    chainId: 56,
+    confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
+    nativeCurrencySymbol: "BNB",
+  },
+  mainnet: {
+    url: "https://eth.llamarpc.com",
+    gasPrice: undefined,
+    nonce: undefined,
+    accounts,
+    verifyApiKey: "UNSET",
+    chainId: 1,
+    confirmations: DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS,
+    nativeCurrencySymbol: "ETH",
   },
 };
 
