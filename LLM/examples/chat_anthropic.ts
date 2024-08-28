@@ -1,4 +1,4 @@
-import { Contract, ethers, TransactionReceipt, Wallet } from "ethers";
+import { Contract, ethers, Wallet, TransactionReceipt } from "ethers";
 import ABI from "./abis/AnthropicChatGpt.json";
 import express from 'express';
 import dotenv from 'dotenv';
@@ -19,6 +19,8 @@ interface ResponseFormat {
 const app = express();
 app.use(express.json());
 
+let chatHistory: Message[] = []; // To store chat history
+
 app.post('/start-chat', async (req, res) => {
   const rpcUrl = process.env.RPC_URL;
   if (!rpcUrl) return res.status(500).send("Missing RPC_URL in .env");
@@ -35,7 +37,12 @@ app.post('/start-chat', async (req, res) => {
     const message = req.body.message;
     if (!message) return res.status(400).send("Message is required");
 
-    const transactionResponse = await contract.startChat(message);
+    // Add the user's message to the chat history
+    chatHistory.push({ role: 'user', content: message });
+
+    // Send the entire chat history to the contract
+    const fullConversation = chatHistory.map(msg => msg.content).join('\n');
+    const transactionResponse = await contract.startChat(fullConversation);
     const receipt = await transactionResponse.wait();
 
     let chatId = getChatId(receipt, contract);
@@ -53,6 +60,7 @@ app.post('/start-chat', async (req, res) => {
           if (msg.role === "assistant") {
             assistantResponse = parseAssistantResponse(msg.content);
             lastProcessedMessageIndex++;
+            chatHistory.push(msg); // Add the assistant's response to the chat history
             break;
           }
         }
@@ -112,5 +120,5 @@ function parseAssistantResponse(content: string): ResponseFormat {
 }
 
 app.listen(3000, () => {
-  // Server is running
+  console.log('Server is running on port 3000');
 });
