@@ -156,29 +156,60 @@ export default function Page() {
   return (
     <div className="flex-1">
       <div className="flex flex-col items-center py-6">
-        <Image
-          src={"/avatar.jpg"}
-          height={50}
-          width={60}
-          alt="Avatar"
-          className="rounded-full"
-        />
-        <p className="text-3xl mt-4 mb-2 font-bold">Your Portfolio</p>
-        <div className="flex space-x-4">
-          <div>
-            <p className="text-sm text-muted-foreground ">Mainnet Worth</p>
-            <p className="text-md font-semibold">
-              <span className="text-muted-foreground mx-1">$</span>
-              {roundUpToFiveDecimals(totalBalanceMainnet.toString())}
-            </p>
+        <div className="flex">
+          <div className="flex flex-col items-center">
+            <Image
+              src={"/avatar.jpg"}
+              height={50}
+              width={60}
+              alt="Avatar"
+              className="rounded-full"
+            />
+            <p className="text-3xl mt-4 mb-2 font-bold">Your Portfolio</p>
+            <div className="flex space-x-4">
+              <div>
+                <p className="text-sm text-muted-foreground ">Mainnet Worth</p>
+                <p className="text-md font-semibold">
+                  <span className="text-muted-foreground mx-1">$</span>
+                  {roundUpToFiveDecimals(totalBalanceMainnet.toString())}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground ">Testnet Worth</p>
+                <p className="text-md font-semibold">
+                  <span className="text-muted-foreground mx-1">$</span>
+                  {roundUpToFiveDecimals(totalBalanceTestnet.toString())}
+                </p>
+              </div>
+            </div>
           </div>
-          <div>
-            <p className="text-sm text-muted-foreground ">Testnet Worth</p>
-            <p className="text-md font-semibold">
-              <span className="text-muted-foreground mx-1">$</span>
-              {roundUpToFiveDecimals(totalBalanceTestnet.toString())}
-            </p>
-          </div>
+          <PieChartComponent
+            usdBalances={{
+              eth: roundUpToFiveDecimals(balanceObjectInUSD[1].native),
+              bnb: roundUpToFiveDecimals(balanceObjectInUSD[56].native),
+              usdc: roundUpToFiveDecimals(
+                balanceObjectInUSD[1].usdc + balanceObjectInUSD[56].usdc
+              ),
+              usdt: roundUpToFiveDecimals(
+                balanceObjectInUSD[1].usdt + balanceObjectInUSD[56].usdt
+              ),
+              link: roundUpToFiveDecimals(
+                balanceObjectInUSD[1].link + balanceObjectInUSD[56].link
+              ),
+              teth: roundUpToFiveDecimals(balanceObjectInUSD[11155111].native),
+              tbnb: roundUpToFiveDecimals(balanceObjectInUSD[97].native),
+              tusdc: roundUpToFiveDecimals(
+                balanceObjectInUSD[11155111].usdc + balanceObjectInUSD[97].usdc
+              ),
+              tusdt: roundUpToFiveDecimals(
+                balanceObjectInUSD[11155111].usdt + balanceObjectInUSD[97].usdt
+              ),
+              tlink: roundUpToFiveDecimals(
+                balanceObjectInUSD[11155111].link + balanceObjectInUSD[97].link
+              ),
+            }}
+            hideTestnet={hideTestnet}
+          />
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4">
@@ -231,33 +262,6 @@ export default function Page() {
               balanceObjectInUSD[11155111].link + balanceObjectInUSD[97].link
             ),
           }}
-        />
-        <PieChartComponent
-          usdBalances={{
-            eth: roundUpToFiveDecimals(balanceObjectInUSD[1].native),
-            bnb: roundUpToFiveDecimals(balanceObjectInUSD[56].native),
-            usdc: roundUpToFiveDecimals(
-              balanceObjectInUSD[1].usdc + balanceObjectInUSD[56].usdc
-            ),
-            usdt: roundUpToFiveDecimals(
-              balanceObjectInUSD[1].usdt + balanceObjectInUSD[56].usdt
-            ),
-            link: roundUpToFiveDecimals(
-              balanceObjectInUSD[1].link + balanceObjectInUSD[56].link
-            ),
-            teth: roundUpToFiveDecimals(balanceObjectInUSD[11155111].native),
-            tbnb: roundUpToFiveDecimals(balanceObjectInUSD[97].native),
-            tusdc: roundUpToFiveDecimals(
-              balanceObjectInUSD[11155111].usdc + balanceObjectInUSD[97].usdc
-            ),
-            tusdt: roundUpToFiveDecimals(
-              balanceObjectInUSD[11155111].usdt + balanceObjectInUSD[97].usdt
-            ),
-            tlink: roundUpToFiveDecimals(
-              balanceObjectInUSD[11155111].link + balanceObjectInUSD[97].link
-            ),
-          }}
-          hideTestnet={hideTestnet}
         />
       </div>
     </div>

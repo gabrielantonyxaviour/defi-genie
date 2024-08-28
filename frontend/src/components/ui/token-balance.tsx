@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supportedchains, supportedcoins } from "@/lib/constants";
 import { useEffect } from "react";
+import { ScrollArea, ScrollBar } from "./scroll-area";
 
 export function TokenBalance({
   balances,
@@ -14,13 +15,13 @@ export function TokenBalance({
     console.log(usdBalances);
   }, []);
   return (
-    <div className="space-y-8">
+    <ScrollArea className="h-[22rem] mx-0 px-0 w-full">
       {Object.entries(usdBalances)
         .sort(
           ([, valueA], [, valueB]) => parseFloat(valueB) - parseFloat(valueA)
         )
         .map(([key, value]) => (
-          <div key={key} className="flex items-center">
+          <div key={key} className="flex items-center py-3 px-3">
             <Avatar className="h-9 w-9">
               <AvatarImage src={supportedcoins[key].image} alt="Avatar" />
               <AvatarFallback>OM</AvatarFallback>
@@ -85,6 +86,6 @@ export function TokenBalance({
           <p className="text-sm text-muted-foreground">${usdBalances.usdc}</p>
         </div>
       </div> */}
-    </div>
+    </ScrollArea>
   );
 }
