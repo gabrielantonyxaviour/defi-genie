@@ -12,26 +12,17 @@ import {
   MenubarItem,
   MenubarMenu,
 } from "@/components/ui/menubar";
-import { supportedchains, supportedcoins } from "@/lib/constants";
+import { supportedchains } from "@/lib/constants";
 
 import axios from "axios";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount, useBalance, useSwitchChain } from "wagmi";
-import { readContract } from "@wagmi/core";
-import { config } from "@/lib/config";
-import { erc20Abi, formatEther } from "viem";
-import { roundUpToFiveDecimals } from "@/lib/utils";
 import { useEnvironmentContext } from "@/components/sections/context";
-interface ClassifyResponse {
-  response: string;
-  action: string;
-  params: string;
-}
 
 export default function PoolPage() {
-  const { status, address, chainId } = useAccount();
+  const { address, chainId } = useAccount();
   const { switchChainAsync, switchChain } = useSwitchChain();
   const [selectedAction, setSelectedAction] = useState(false);
   const [fromAmount, setFromAmount] = useState("0");
@@ -47,9 +38,6 @@ export default function PoolPage() {
   const [slippage, setSlippage] = useState("0.1");
   const [sellingPrice, setSellingPrice] = useState("0");
 
-  const { data: nativeBalance } = useBalance({
-    address,
-  });
   const [chainChevron, setChainChevron] = useState(true);
   const { action, actionParams } = useEnvironmentContext();
   const { balanceObject } = useEnvironmentContext();

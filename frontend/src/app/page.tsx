@@ -1,29 +1,19 @@
 "use client";
 
-import { useAccount, useBalance } from "wagmi";
+import { useAccount } from "wagmi";
 import DefaultLanding from "@/components/sections/default-landing";
-import { TokenBalance } from "@/components/ui/token-balance";
 import TokenBalanceCard from "@/components/sections/token-balance-card";
 import Image from "next/image";
-import { PieChartComponent } from "@/components/ui/pie-chart";
-import { useEffect, useState } from "react";
 import { roundUpToFiveDecimals } from "@/lib/utils";
-import { config } from "@/lib/config";
-import Spinner from "@/components/ui/loading";
-import { supportedchains, supportedcoins } from "@/lib/constants";
 import { useEnvironmentContext } from "@/components/sections/context";
 import "@/styles/spinner.css";
 export default function Page() {
-  const { status, address } = useAccount();
+  const { status } = useAccount();
   const {
     totalBalanceMainnet,
-    setTotalBalanceMainnet,
     totalBalanceTestnet,
-    setTotalBalanceTestnet,
     balanceObject,
-    setBalanceObject,
     balanceObjectInUSD,
-    setBalanceObjectInUSD,
   } = useEnvironmentContext();
 
   if (status == "disconnected") return <DefaultLanding />;
