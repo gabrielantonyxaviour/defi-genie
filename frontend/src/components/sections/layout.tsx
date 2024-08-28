@@ -58,6 +58,7 @@ export default function Layout({ children }: LayoutProps) {
   const [balanceFetched, setBalanceFetched] = useState(false);
   const [access, setAccess] = useState(true); // TODO: Turn this off
   const [openAi, setOpenAi] = useState(false);
+  const [aiRefresh, setAiRefresh] = useState(false);
   const [convos, setConvos] = useState<Convo[]>([]);
   useEffect(() => {
     (async function () {
@@ -93,9 +94,10 @@ export default function Layout({ children }: LayoutProps) {
               id: "1",
               isAI: true,
               message:
-                "There is something wrong with the AI. Please contact @marshal_14627 in Discord.",
+                "There is something wrong with the AI. Please refresh the page and try again. If this issue persists, contact @marshal_14627 in Discord.",
             },
           ]);
+          setAiRefresh(true);
         }
       }
     })();
@@ -272,6 +274,7 @@ export default function Layout({ children }: LayoutProps) {
                     convos={convos}
                     setConvos={setConvos}
                     setClassifyResponse={setClassifyResponse}
+                    aiRefresh={aiRefresh}
                   />
                 </SheetDescription>
               </SheetHeader>

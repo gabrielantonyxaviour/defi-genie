@@ -20,10 +20,12 @@ export default function AIComponent({
   convos,
   setConvos,
   setClassifyResponse,
+  aiRefresh,
 }: {
   convos: Convo[];
   setConvos: (convos: Convo[]) => void;
   setClassifyResponse: (response: any) => void;
+  aiRefresh: boolean;
 }) {
   const [prompt, setPrompt] = useState<string>("");
 
@@ -85,7 +87,9 @@ export default function AIComponent({
       <div className="flex mx-auto pt-4 w-full  px-2">
         <Input
           type="text"
-          disabled={false}
+          disabled={
+            convos.length == 0 || !convos[convos.length - 1].isAI || aiRefresh
+          }
           value={prompt}
           onChange={(e) => {
             setPrompt(e.target.value);
@@ -96,34 +100,50 @@ export default function AIComponent({
         <Button
           className="ml-2"
           size={"sm"}
-          disabled={false}
+          disabled={
+            convos.length == 0 || !convos[convos.length - 1].isAI || aiRefresh
+          }
           onClick={async () => {
-            const currentConvo = {
-              id: (convos.length + 1).toString(),
-              isAI: false,
-              message: prompt,
-            };
-            setConvos([...convos, currentConvo]);
-            const response = await axios.post("/api/classify", {
-              message: prompt,
-            });
-            console.log(response.data);
-            setPrompt("");
-            setConvos([
-              ...convos,
-              currentConvo,
-              {
+            try {
+              const currentConvo = {
                 id: (convos.length + 1).toString(),
-                isAI: true,
-                message:
-                  response.data.response.response.length > 0
-                    ? response.data.response.response
-                    : "I am not sure how to respond to that. Can you please try again?",
-              },
-            ]);
+                isAI: false,
+                message: prompt,
+              };
+              setConvos([...convos, currentConvo]);
+              const response = await axios.post("/api/classify", {
+                message: prompt,
+              });
+              console.log(response.data);
+              if (
+                response.data.success == false ||
+                response.data.response.response.length == 0
+              )
+                throw new Error("Error in response");
+              setPrompt("");
+              setConvos([
+                ...convos,
+                currentConvo,
+                {
+                  id: (convos.length + 1).toString(),
+                  isAI: true,
+                  message: response.data.response.response,
+                },
+              ]);
 
-            setClassifyResponse(response.data.response);
-            setPrompt("");
+              setClassifyResponse(response.data.response);
+            } catch (e) {
+              console.log(e);
+              setConvos([
+                ...convos,
+                {
+                  id: (convos.length + 1).toString(),
+                  isAI: true,
+                  message:
+                    "Sorry, there is a small issue with my brain. Can you please say that again?",
+                },
+              ]);
+            }
           }}
         >
           <Icons.rightArrow className="h-3 w-3 fill-current" />
