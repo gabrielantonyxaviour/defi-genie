@@ -19,9 +19,7 @@ export default function TokenBalanceCard({
     <Card className="col-span-2">
       <CardHeader>
         <CardTitle>Assets Owned</CardTitle>
-        <CardDescription>
-          Track your portoflio in Binance Smart Chain.
-        </CardDescription>
+        <CardDescription>Track your crosschain portfolio.</CardDescription>
       </CardHeader>
       <CardContent>
         <TokenBalance balances={balances} usdBalances={usdBalances} />

@@ -73,6 +73,7 @@ export default function ConnectButton() {
               .sort((a, b) => a.id - b.id)
               .map((coin) => (
                 <MenubarItem
+                  key={coin.id}
                   disabled={
                     (pathname == "/pool" && coin.chainId == 97) ||
                     (pathname == "/stake" &&

@@ -1,11 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Address } from "./type";
 
-export const TOKEN_ADDRESSES: Record<string, Address> = {
-  usdc: "0x64544969ed7ebf5f083679233325356ebe738930",
-  usdt: "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
-};
-
 export const COINMARKETCAP_IDS: Record<string, number> = {
   nativeBnb: 1839,
   bnb: 1839,
@@ -30,8 +25,22 @@ export const supportedcoins: Record<string, any> = {
       11155111: "0x0000000000000000000000000000000000000000",
     },
   },
+  eth: {
+    name: "Ethereum",
+    symbol: "ETH",
+    image: "/coins/ethereum.png",
+    token: {
+      1: "0x0000000000000000000000000000000000000000",
+      11155111: "0x0000000000000000000000000000000000000000",
+    },
+  },
   nativeBnb: {
-    name: "Binance Coin",
+    name: "Binance Smart Chain",
+    symbol: "BNB",
+    image: "/coins/bnb.png",
+  },
+  bnb: {
+    name: "Binance Smart Chain",
     symbol: "BNB",
     image: "/coins/bnb.png",
   },
@@ -42,6 +51,8 @@ export const supportedcoins: Record<string, any> = {
     token: {
       1: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       11155111: "0xfff9976782d46cc05630d1f6ebab18b2324d6b14",
+      56: "",
+      97: "",
     },
   },
   link: {
@@ -52,7 +63,7 @@ export const supportedcoins: Record<string, any> = {
       1: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
       11155111: "0x779877A7B0D9E8603169DdbD7836e478b4624789",
       56: "0x404460C6A5EdE2D891e8297795264fDe62ADBB75",
-      97: "",
+      97: "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
     },
   },
   usdc: {
@@ -63,7 +74,7 @@ export const supportedcoins: Record<string, any> = {
       1: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
       11155111: "0x1c7d4b196cb0c7b01d743fbc6116a902379c7238",
       56: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
-      97: "",
+      97: "0x64544969ed7EBf5f083679233325356EbE738930",
     },
   },
   usdt: {
@@ -74,7 +85,7 @@ export const supportedcoins: Record<string, any> = {
       1: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
       11155111: "0x703bd35f91bc3947aac70b4b0c560bee5f06f84c",
       56: "0x55d398326f99059fF775485246999027B3197955",
-      97: "",
+      97: "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
     },
   },
 };
