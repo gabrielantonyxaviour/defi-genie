@@ -150,7 +150,12 @@ export default function Page() {
   if (totalBalanceMainnet == null || totalBalanceTestnet == null)
     return (
       <div className="flex-1 flex flex-col justify-center items-center">
-        <Spinner />
+        <div className="flex space-x-4 items-center">
+          <div className="loading-dots"></div>
+          <p className="font-semibold text-md">
+            {balanceFetched ? "Finishing up..." : "Fetching Balances"}
+          </p>
+        </div>
       </div>
     );
   return (
@@ -166,7 +171,7 @@ export default function Page() {
               className="rounded-full"
             />
             <p className="text-3xl mt-4 mb-2 font-bold">Your Portfolio</p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-8 text-center">
               <div>
                 <p className="text-sm text-muted-foreground ">Mainnet Worth</p>
                 <p className="text-md font-semibold">
@@ -183,36 +188,9 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <PieChartComponent
-            usdBalances={{
-              eth: roundUpToFiveDecimals(balanceObjectInUSD[1].native),
-              bnb: roundUpToFiveDecimals(balanceObjectInUSD[56].native),
-              usdc: roundUpToFiveDecimals(
-                balanceObjectInUSD[1].usdc + balanceObjectInUSD[56].usdc
-              ),
-              usdt: roundUpToFiveDecimals(
-                balanceObjectInUSD[1].usdt + balanceObjectInUSD[56].usdt
-              ),
-              link: roundUpToFiveDecimals(
-                balanceObjectInUSD[1].link + balanceObjectInUSD[56].link
-              ),
-              teth: roundUpToFiveDecimals(balanceObjectInUSD[11155111].native),
-              tbnb: roundUpToFiveDecimals(balanceObjectInUSD[97].native),
-              tusdc: roundUpToFiveDecimals(
-                balanceObjectInUSD[11155111].usdc + balanceObjectInUSD[97].usdc
-              ),
-              tusdt: roundUpToFiveDecimals(
-                balanceObjectInUSD[11155111].usdt + balanceObjectInUSD[97].usdt
-              ),
-              tlink: roundUpToFiveDecimals(
-                balanceObjectInUSD[11155111].link + balanceObjectInUSD[97].link
-              ),
-            }}
-            hideTestnet={hideTestnet}
-          />
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="w-[80%] mx-auto">
         <TokenBalanceCard
           balances={{
             eth: roundUpToFiveDecimals(balanceObject[1].native),
