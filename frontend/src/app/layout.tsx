@@ -10,6 +10,7 @@ import Layout from "@/components/sections/layout";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { config } from "@/lib/config";
+import { BalanceProvider } from "@/components/sections/context";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -39,11 +40,13 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <Layout>
-                {children}
-                <ThemeSwitcher />
-                <Toaster />
-              </Layout>
+              <BalanceProvider>
+                <Layout>
+                  {children}
+                  <ThemeSwitcher />
+                  <Toaster />
+                </Layout>
+              </BalanceProvider>
             </ThemeProvider>
           </body>
         </html>

@@ -1,19 +1,11 @@
 import Image from "next/image";
 
-import { SidebarNav } from "@/components/ui/side-bar";
-import { Button } from "@/components/ui/button";
 import ConnectButton from "@/components/ui/connect-button";
-import { Input } from "@/components/ui/input";
-import { Icons } from "@/components/ui/icons";
 import { useAccount } from "wagmi";
 import DefaultLanding from "../sections/default-landing";
 import { useState } from "react";
-import PasscodeDialog from "./passcode-dialog";
-import { Link } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { MainNav } from "./navbar";
 import AIComponent from "./ai";
-import { BalanceProvider } from "./context";
 
 interface ClassifyResponse {
   response: string;
@@ -27,24 +19,14 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const { status } = useAccount();
-  const [passCode, setPasscode] = useState("");
   const [classifyResponse, setClassifyResponse] = useState<ClassifyResponse>({
     response: "",
     action: "",
     params: "",
   });
   const [access, setAccess] = useState(true); // TODO: Turn this off
-  const [totalBalanceMainnet, setTotalBalanceMainnet] = useState<number>(0);
-  const [totalBalanceTestnet, setTotalBalanceTestnet] = useState<number>(0);
-  const [balanceObject, setBalanceObject] = useState<any>({});
-  const [balanceObjectInUSD, setBalanceObjectInUSD] = useState<any>({});
   return (
     <>
-      {/* <PasscodeDialog
-        passcode={passCode}
-        setPasscode={setPasscode}
-        setAccess={setAccess}
-      /> */}
       {access && (
         <div className="h-screen flex">
           <div className="px-8 w-[75%] flex flex-col justify-center items-center">
@@ -57,11 +39,7 @@ export default function Layout({ children }: LayoutProps) {
 
             <div className="flex flex-1 space-x-12 w-full">
               <div className="flex-1 flex flex-col w-full h-full">
-                {status != "connected" ? (
-                  <DefaultLanding />
-                ) : (
-                  <BalanceProvider>{children}</BalanceProvider>
-                )}
+                {status != "connected" ? <DefaultLanding /> : children}
               </div>
             </div>
           </div>
