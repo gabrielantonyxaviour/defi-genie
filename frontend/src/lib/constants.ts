@@ -8,12 +8,16 @@ export const TOKEN_ADDRESSES: Record<string, Address> = {
 
 export const COINMARKETCAP_IDS: Record<string, number> = {
   nativeBnb: 1839,
+  bnb: 1839,
   wrappedBnb: 7192,
+  wbnb: 7192,
   wrappedEth: 2396,
+  weth: 2396,
   link: 1975,
   usdc: 3408,
   usdt: 825,
   nativeEth: 1027,
+  eth: 1027,
 };
 
 export const supportedcoins: Record<string, any> = {
