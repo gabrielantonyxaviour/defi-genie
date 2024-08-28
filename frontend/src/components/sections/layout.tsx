@@ -47,7 +47,7 @@ export default function Layout({ children }: LayoutProps) {
   });
   const { balanceObject } = useTokenBalance();
   const [access, setAccess] = useState(true); // TODO: Turn this off
-  const [openAi, setOpenAi] = useState(true);
+  const [openAi, setOpenAi] = useState(false);
   const [convos, setConvos] = useState<Convo[]>([]);
   useEffect(() => {
     (async function () {
@@ -113,20 +113,22 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             </div>
           </div>
-
+          <Button
+            disabled={status != "connected"}
+            className="z-10 absolute bottom-10 right-10 border-2 rounded-full border-muted-foreground bg-transparent border-none hover:border-none hover:bg-transparent"
+            onClick={() => {
+              setOpenAi(true);
+            }}
+          >
+            <Image
+              src={"/ai.gif"}
+              height={80}
+              width={80}
+              alt="Logo"
+              className=" rounded-full border-[2px]"
+            />
+          </Button>
           <Sheet open={openAi}>
-            <SheetTrigger className="z-10 absolute bottom-10 right-10 border-2 rounded-full border-muted-foreground ">
-              <Image
-                src={"/ai.gif"}
-                height={80}
-                width={80}
-                alt="Logo"
-                className="cursor-pointer rounded-full"
-                onClick={() => {
-                  setOpenAi(true);
-                }}
-              />
-            </SheetTrigger>
             <SheetContent>
               <SheetHeader>
                 <SheetTitle className="relative">
