@@ -8,7 +8,6 @@ export default function DefaultLanding() {
       <div className="py-4">
         <ConnectButton />
       </div>
-      <p className="text-xs">Connect your wallet to get started</p>
     </div>
   );
 }
