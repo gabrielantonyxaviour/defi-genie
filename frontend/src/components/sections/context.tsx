@@ -9,6 +9,8 @@ interface BalanceContextType {
   setBalanceObject: (balanceObject: any) => void;
   balanceObjectInUSD: any;
   setBalanceObjectInUSD: (balanceObjectInUSD: any) => void;
+  openAi: boolean;
+  setOpenAi: (openAi: boolean) => void;
 }
 
 const BalanceContext = createContext<BalanceContextType | undefined>(undefined);
@@ -30,7 +32,7 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   );
   const [balanceObject, setBalanceObject] = useState<any>(null);
   const [balanceObjectInUSD, setBalanceObjectInUSD] = useState<any>(null);
-
+  const [openAi, setOpenAi] = useState<boolean>(false);
   return (
     <BalanceContext.Provider
       value={{
@@ -42,6 +44,8 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
         setBalanceObject,
         balanceObjectInUSD,
         setBalanceObjectInUSD,
+        openAi,
+        setOpenAi,
       }}
     >
       {children}

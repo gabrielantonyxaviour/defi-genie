@@ -13,7 +13,7 @@ import { config } from "@/lib/config";
 import Spinner from "@/components/ui/loading";
 import { supportedchains, supportedcoins } from "@/lib/constants";
 import { useTokenBalance } from "@/components/sections/context";
-
+import "@/styles/spinner.css";
 export default function Page() {
   const { status, address } = useAccount();
   const {
@@ -151,9 +151,9 @@ export default function Page() {
     return (
       <div className="flex-1 flex flex-col justify-center items-center">
         <div className="flex space-x-4 items-center">
-          <div className="loading-dots"></div>
+          <div className="spinner"></div>
           <p className="font-semibold text-md">
-            {balanceFetched ? "Finishing up..." : "Fetching Balances"}
+            {balanceFetched ? "Finishing up" : "Fetching Balances"}
           </p>
         </div>
       </div>

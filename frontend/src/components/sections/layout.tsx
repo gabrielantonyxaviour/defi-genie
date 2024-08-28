@@ -6,7 +6,16 @@ import DefaultLanding from "../sections/default-landing";
 import { useState } from "react";
 import { MainNav } from "./navbar";
 import AIComponent from "./ai";
-
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from "lucide-react";
+import { Button } from "../ui/button";
 interface ClassifyResponse {
   response: string;
   action: string;
@@ -25,15 +34,21 @@ export default function Layout({ children }: LayoutProps) {
     params: "",
   });
   const [access, setAccess] = useState(true); // TODO: Turn this off
+  const [openAi, setOpenAi] = useState(true);
   return (
     <>
       {access && (
         <div className="h-screen flex">
-          <div className="px-8 w-[75%] flex flex-col justify-center items-center">
+          <div className="px-8 w-full flex flex-col justify-center items-center">
             <div className="flex w-full justify-between">
-              <div className="flex items-center py-6">
-                <Image src={"/logo.png"} height={50} width={50} alt="Logo" />
-                <MainNav className="mx-6" />
+              <div className="flex justify-between py-6 w-full">
+                <div className="flex items-center">
+                  <Image src={"/logo.png"} height={50} width={50} alt="Logo" />
+                  <MainNav className="mx-6" />
+                </div>
+                <div className="flex">
+                  <ConnectButton />
+                </div>
               </div>
             </div>
 
@@ -43,13 +58,39 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             </div>
           </div>
-          <div className="flex-1 flex flex-col justify-center p-4 h-full bg-background border">
-            <ConnectButton />
-            <AIComponent
-              classifyResponse={classifyResponse}
-              setClassifyResponse={setClassifyResponse}
-            />
-          </div>
+
+          <Sheet open={openAi}>
+            <SheetTrigger className="z-10 absolute bottom-10 right-10 border-2 rounded-full border-muted-foreground ">
+              <Image
+                src={"/ai.gif"}
+                height={80}
+                width={80}
+                alt="Logo"
+                className="cursor-pointer rounded-full"
+                onClick={() => {
+                  setOpenAi(true);
+                }}
+              />
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle className="relative">
+                  <ArrowRightCircleIcon
+                    className="h-6 w-6 absolute top-2 -left-9 text-muted-foreground cursor-pointer"
+                    onClick={() => {
+                      setOpenAi(false);
+                    }}
+                  />
+                </SheetTitle>
+                <SheetDescription className="h-screen">
+                  <AIComponent
+                    classifyResponse={classifyResponse}
+                    setClassifyResponse={setClassifyResponse}
+                  />
+                </SheetDescription>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
         </div>
       )}
     </>
