@@ -284,7 +284,13 @@ export default function PoolPage() {
               setSlippage,
               slippage,
               fromBalance:
-                balanceObject[chainId?.toString() || "11155111"][fromToken],
+                balanceObject != null
+                  ? balanceObject[(chainId || 11155111).toString()][
+                      fromToken == "nativeBnb" || fromToken == "nativeEth"
+                        ? "native"
+                        : fromToken
+                    ]
+                  : 0,
               toLoading,
               triggerAction: () => {
                 setOpenTransaction(true);
