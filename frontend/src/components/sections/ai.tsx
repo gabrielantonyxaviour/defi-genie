@@ -34,65 +34,19 @@ interface Convo {
   message: string;
 }
 
-interface ClassifyResponse {
-  response: string;
-  action: string;
-  params: string;
-}
-
 export default function AIComponent({
-  classifyResponse,
+  convos,
+  setConvos,
   setClassifyResponse,
 }: {
-  classifyResponse: ClassifyResponse;
-  setClassifyResponse: (classifyResponse: ClassifyResponse) => void;
+  convos: Convo[];
+  setConvos: (convos: Convo[]) => void;
+  setClassifyResponse: (response: any) => void;
 }) {
-  const [convos, setConvos] = useState<Convo[]>([]);
   const [prompt, setPrompt] = useState<string>("");
   const { status } = useAccount();
   const { balanceObjectInUSD } = useTokenBalance();
-  useEffect(() => {
-    (async function () {
-      console.log("BEFORE SNEDING TO AI");
-      console.log(balanceObjectInUSD);
-      if (balanceObjectInUSD != null) {
-        try {
-          const response = await axios.post("/api/classify", {
-            message: JSON.stringify(balanceObjectInUSD),
-          });
 
-          console.log(response.data);
-          if (response.data.success == false) throw Error("Error in response");
-
-          console.log(typeof response.data.response.response);
-          setConvos([
-            ...convos,
-            {
-              id: (convos.length + 1).toString(),
-              isAI: true,
-              message: response.data.response.response.replace(/\n/g, "<br />"),
-            },
-          ]);
-          console.log({
-            id: (convos.length + 1).toString(),
-            isAI: true,
-            message: response.data.response.response.replace(/\n/g, "<br />"),
-          });
-        } catch (e) {
-          console.log(e);
-          setConvos([
-            ...convos,
-            {
-              id: (convos.length + 1).toString(),
-              isAI: true,
-              message:
-                "There is something wrong with the AI. Please contact @marshal_14627 in Discord.",
-            },
-          ]);
-        }
-      }
-    })();
-  }, [balanceObjectInUSD]);
   return (
     <div className="h-screen my-auto pt-6 flex flex-col bg-background ">
       <ScrollArea className="h-[85%] flex flex-col space-y-2 no-scrollbar">

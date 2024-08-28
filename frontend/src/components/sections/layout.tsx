@@ -3,7 +3,7 @@ import Image from "next/image";
 import ConnectButton from "@/components/ui/connect-button";
 import { useAccount } from "wagmi";
 import DefaultLanding from "../sections/default-landing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MainNav } from "./navbar";
 import AIComponent from "./ai";
 import {
@@ -20,6 +20,14 @@ import {
   ArrowRightCircleIcon,
 } from "lucide-react";
 import { Button } from "../ui/button";
+import { useTokenBalance } from "./context";
+import axios from "axios";
+interface Convo {
+  id: string;
+  isAI: boolean;
+  message: string;
+}
+
 interface ClassifyResponse {
   response: string;
   action: string;
@@ -37,8 +45,52 @@ export default function Layout({ children }: LayoutProps) {
     action: "",
     params: "",
   });
+  const { balanceObjectInUSD } = useTokenBalance();
   const [access, setAccess] = useState(true); // TODO: Turn this off
   const [openAi, setOpenAi] = useState(true);
+  const [convos, setConvos] = useState<Convo[]>([]);
+  useEffect(() => {
+    (async function () {
+      console.log("BEFORE SNEDING TO AI");
+      console.log(JSON.stringify(balanceObjectInUSD));
+      if (balanceObjectInUSD != null) {
+        try {
+          const response = await axios.post("/api/classify", {
+            message: JSON.stringify(balanceObjectInUSD),
+          });
+
+          console.log(response.data);
+          if (response.data.success == false) throw Error("Error in response");
+
+          console.log(typeof response.data.response.response);
+          setConvos([
+            ...convos,
+            {
+              id: (convos.length + 1).toString(),
+              isAI: true,
+              message: response.data.response.response.replace(/\n/g, "<br />"),
+            },
+          ]);
+          console.log({
+            id: (convos.length + 1).toString(),
+            isAI: true,
+            message: response.data.response.response.replace(/\n/g, "<br />"),
+          });
+        } catch (e) {
+          console.log(e);
+          setConvos([
+            ...convos,
+            {
+              id: (convos.length + 1).toString(),
+              isAI: true,
+              message:
+                "There is something wrong with the AI. Please contact @marshal_14627 in Discord.",
+            },
+          ]);
+        }
+      }
+    })();
+  }, [balanceObjectInUSD]);
   return (
     <>
       {access && (
@@ -88,7 +140,8 @@ export default function Layout({ children }: LayoutProps) {
                 </SheetTitle>
                 <SheetDescription className="h-screen">
                   <AIComponent
-                    classifyResponse={classifyResponse}
+                    convos={convos}
+                    setConvos={setConvos}
                     setClassifyResponse={setClassifyResponse}
                   />
                 </SheetDescription>
