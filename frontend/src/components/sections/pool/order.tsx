@@ -52,6 +52,7 @@ export default function Order({
           setFromAmount={setFromAmount}
           fromToken={fromToken}
           setFromToken={setFromToken}
+          fromBalance={"0"}
           isTestnet={isTestnet}
         />
         <To
