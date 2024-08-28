@@ -44,8 +44,6 @@ export default function AIComponent({
   setClassifyResponse: (response: any) => void;
 }) {
   const [prompt, setPrompt] = useState<string>("");
-  const { status } = useAccount();
-  const { balanceObjectInUSD } = useTokenBalance();
 
   return (
     <div className="h-screen my-auto pt-6 flex flex-col bg-background ">
@@ -65,7 +63,7 @@ export default function AIComponent({
             )}
             <Card className="max-w-[70%]">
               <CardContent className="py-2 px-3">
-                {convo.isAI ? (
+                {convo.isAI && convo.id == convos.length.toString() ? (
                   <ReactTyped
                     strings={[convo.message] as string[]}
                     typeSpeed={15}
@@ -128,6 +126,7 @@ export default function AIComponent({
               message: prompt,
             });
             console.log(response.data);
+            setPrompt("");
             setConvos([
               ...convos,
               currentConvo,

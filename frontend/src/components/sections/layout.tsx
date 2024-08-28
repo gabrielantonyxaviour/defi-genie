@@ -45,18 +45,18 @@ export default function Layout({ children }: LayoutProps) {
     action: "",
     params: "",
   });
-  const { balanceObjectInUSD } = useTokenBalance();
+  const { balanceObject } = useTokenBalance();
   const [access, setAccess] = useState(true); // TODO: Turn this off
   const [openAi, setOpenAi] = useState(true);
   const [convos, setConvos] = useState<Convo[]>([]);
   useEffect(() => {
     (async function () {
       console.log("BEFORE SNEDING TO AI");
-      console.log(JSON.stringify(balanceObjectInUSD));
-      if (balanceObjectInUSD != null) {
+      console.log(JSON.stringify(balanceObject));
+      if (balanceObject != null && convos.length == 0) {
         try {
           const response = await axios.post("/api/classify", {
-            message: JSON.stringify(balanceObjectInUSD),
+            message: JSON.stringify(balanceObject),
           });
 
           console.log(response.data);
@@ -64,15 +64,14 @@ export default function Layout({ children }: LayoutProps) {
 
           console.log(typeof response.data.response.response);
           setConvos([
-            ...convos,
             {
-              id: (convos.length + 1).toString(),
+              id: "1",
               isAI: true,
               message: response.data.response.response.replace(/\n/g, "<br />"),
             },
           ]);
           console.log({
-            id: (convos.length + 1).toString(),
+            id: "1",
             isAI: true,
             message: response.data.response.response.replace(/\n/g, "<br />"),
           });
@@ -81,7 +80,7 @@ export default function Layout({ children }: LayoutProps) {
           setConvos([
             ...convos,
             {
-              id: (convos.length + 1).toString(),
+              id: "1",
               isAI: true,
               message:
                 "There is something wrong with the AI. Please contact @marshal_14627 in Discord.",
@@ -90,7 +89,7 @@ export default function Layout({ children }: LayoutProps) {
         }
       }
     })();
-  }, [balanceObjectInUSD]);
+  }, [balanceObject]);
   return (
     <>
       {access && (
