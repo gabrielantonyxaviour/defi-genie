@@ -21,8 +21,10 @@ import {
 
 export function PieChartComponent({
   usdBalances,
+  hideTestnet,
 }: {
   usdBalances: Record<string, string>;
+  hideTestnet: boolean;
 }) {
   const chartData = [
     {

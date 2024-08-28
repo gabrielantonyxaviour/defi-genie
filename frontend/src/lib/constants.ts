@@ -34,6 +34,31 @@ export const supportedcoins: Record<string, any> = {
       11155111: "0x0000000000000000000000000000000000000000",
     },
   },
+  teth: {
+    name: "Ethereum Sepolia Testnet",
+    symbol: "tETH",
+    image: "/coins/ethereum.png",
+  },
+  tbnb: {
+    name: "Binance Smart Chain Testnet",
+    symbol: "BNB",
+    image: "/coins/bnb.png",
+  },
+  tlink: {
+    name: "Test Chain Link ",
+    symbol: "tLINK",
+    image: "/coins/link.png",
+  },
+  tusdc: {
+    name: "Test USD Stablecoin",
+    symbol: "tUSDC",
+    image: "/coins/usdc.png",
+  },
+  tusdt: {
+    name: "Test Tether USD",
+    symbol: "tUSDT",
+    image: "/coins/usdt.png",
+  },
   nativeBnb: {
     name: "Binance Smart Chain",
     symbol: "BNB",

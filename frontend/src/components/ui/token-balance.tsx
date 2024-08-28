@@ -22,7 +22,7 @@ export function TokenBalance({
         .map(([key, value]) => (
           <div key={key} className="flex items-center">
             <Avatar className="h-9 w-9">
-              <AvatarImage src={`/coins/${key}.png`} alt="Avatar" />
+              <AvatarImage src={supportedcoins[key].image} alt="Avatar" />
               <AvatarFallback>OM</AvatarFallback>
             </Avatar>
             <div className="ml-4 space-y-1">

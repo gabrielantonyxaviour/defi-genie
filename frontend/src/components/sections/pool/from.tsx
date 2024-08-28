@@ -118,7 +118,7 @@ export default function From({
                 </MenubarItem>
               )}
               {Object.values(supportedcoins)
-                .slice(3)
+                .slice(10)
                 .map((coin) => (
                   <MenubarItem
                     disabled={coin.symbol.toLocaleLowerCase() == toToken}

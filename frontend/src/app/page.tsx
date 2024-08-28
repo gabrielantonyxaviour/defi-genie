@@ -12,32 +12,28 @@ import { getBalance } from "@wagmi/core";
 import { config } from "@/lib/config";
 import Spinner from "@/components/ui/loading";
 import { supportedchains, supportedcoins } from "@/lib/constants";
+import { useTokenBalance } from "@/components/sections/context";
 
 export default function Page() {
   const { status, address } = useAccount();
-
-  const [ethBalance, setEthBalance] = useState<any>(null);
-  const [ethBalanceInUSD, setEthBalanceInUSD] = useState<any>(null);
-  const [bnbBalance, setBnbBalance] = useState<any>(null);
-  const [bnbBalanceInUSD, setBnbBalanceInUSD] = useState<any>(null);
-  const [usdcBalance, setUsdcBalance] = useState<any>(null);
-  const [usdtBalance, setUsdtBalance] = useState<any>(null);
-  const [linkBalance, setLinkBalance] = useState<any>(null);
-  const [linkBalanceInUSD, setLinkBalanceInUSD] = useState<any>(null);
-  const [totalValue, setTotalValue] = useState<any>(null);
+  const {
+    totalBalanceMainnet,
+    setTotalBalanceMainnet,
+    totalBalanceTestnet,
+    setTotalBalanceTestnet,
+    balanceObject,
+    setBalanceObject,
+    balanceObjectInUSD,
+    setBalanceObjectInUSD,
+  } = useTokenBalance();
   const [balanceFetched, setBalanceFetched] = useState(false);
+  const [hideTestnet, setHideTestnet] = useState(false);
   useEffect(() => {
-    if (
-      address != null &&
-      ethBalance == null &&
-      bnbBalance == null &&
-      usdcBalance == null &&
-      usdtBalance == null &&
-      linkBalance == null
-    ) {
+    if (address != null && balanceObject == null) {
       try {
         (async function () {
           const chains = Object.values(supportedchains);
+          const tempBalanceObject: any = {};
           const tempEthBalance: any = {};
           const tempBnbBalance: any = {};
           const tempUsdcBalance: any = {};
@@ -45,6 +41,7 @@ export default function Page() {
           const tempLinkBalance: any = {};
           for (let i = 0; i < chains.length; i++) {
             const chain = chains[i];
+            tempBalanceObject[chain.chainId] = {};
             const { formatted: native } = await getBalance(config, {
               address: address,
               chainId: chain.chainId,
@@ -54,6 +51,8 @@ export default function Page() {
             } else {
               tempEthBalance[chain.chainId] = native;
             }
+            tempBalanceObject[chain.chainId].native = native;
+
             const usdcAddress = supportedcoins.usdc.token[chain.chainId];
             if (usdcAddress.length > 0) {
               const { formatted: usdc } = await getBalance(config, {
@@ -62,7 +61,8 @@ export default function Page() {
                 token: usdcAddress,
               });
               tempUsdcBalance[chain.chainId] = usdc;
-            }
+              tempBalanceObject[chain.chainId].usdc = usdc;
+            } else tempBalanceObject[chain.chainId].usdc = 0;
             const usdtAddress = supportedcoins.usdt.token[chain.chainId];
             if (usdtAddress.length > 0) {
               const { formatted: usdt } = await getBalance(config, {
@@ -71,7 +71,8 @@ export default function Page() {
                 token: usdtAddress,
               });
               tempUsdtBalance[chain.chainId] = usdt;
-            }
+              tempBalanceObject[chain.chainId].usdt = usdt;
+            } else tempBalanceObject[chain.chainId].usdt = 0;
 
             const linkAddress = supportedcoins.link.token[chain.chainId];
             if (linkAddress.length > 0) {
@@ -81,40 +82,12 @@ export default function Page() {
                 token: linkAddress,
               });
               tempLinkBalance[chain.chainId] = link;
-            }
+              tempBalanceObject[chain.chainId].link = link;
+            } else tempBalanceObject[chain.chainId].link = 0;
           }
-          setEthBalance(
-            Object.values(tempEthBalance).reduce(
-              (acc: any, balance: any) => parseFloat(acc) + parseFloat(balance),
-              0
-            )
-          );
-          setBnbBalance(
-            Object.values(tempBnbBalance).reduce(
-              (acc: any, balance: any) => parseFloat(acc) + parseFloat(balance),
-              0
-            )
-          );
-          setUsdcBalance(
-            Object.values(tempUsdcBalance).reduce(
-              (acc: any, balance: any) => parseFloat(acc) + parseFloat(balance),
-              0
-            )
-          );
-          setUsdtBalance(
-            Object.values(tempUsdtBalance).reduce(
-              (acc: any, balance: any) => parseFloat(acc) + parseFloat(balance),
-              0
-            )
-          );
-          setLinkBalance(
-            Object.values(tempLinkBalance).reduce(
-              (acc: any, balance: any) => parseFloat(acc) + parseFloat(balance),
-              0
-            )
-          );
-          console.log("USD BALANCE");
-          console.log(tempUsdcBalance);
+          console.log("TEMP BALANCE OBJECT");
+          console.log(tempBalanceObject);
+          setBalanceObject(tempBalanceObject);
           setBalanceFetched(true);
         })();
       } catch (e) {
@@ -124,11 +97,7 @@ export default function Page() {
     }
     if (balanceFetched) {
       console.log("ALL BALANCES FETCHED");
-      console.log(ethBalance);
-      console.log(bnbBalance);
-      console.log(usdcBalance);
-      console.log(usdtBalance);
-      console.log(linkBalance);
+      console.log(balanceObject);
       try {
         (async function () {
           const res = await fetch(
@@ -143,17 +112,33 @@ export default function Page() {
           );
           const nextData = await nextRes.json();
           const bnbUsdValue = nextData.amount.from;
-          let tempTotalValue = 0;
-          tempTotalValue += ethBalance * ethUsdValue;
-          tempTotalValue += bnbBalance * bnbUsdValue;
-          tempTotalValue += usdcBalance;
-          tempTotalValue += usdtBalance;
-          tempTotalValue += linkBalance * linkUsdValue;
-
-          setTotalValue(tempTotalValue.toString());
-          setEthBalanceInUSD((ethBalance * ethUsdValue).toString());
-          setBnbBalanceInUSD((bnbBalance * bnbUsdValue).toString());
-          setLinkBalanceInUSD((linkBalance * linkUsdValue).toString());
+          let tempTotalValueMainnet = 0;
+          let tempTotalValueTestnet = 0;
+          let tempBalanceObjectInUSD: any = {};
+          for (const [chainId, balances] of Object.entries(balanceObject)) {
+            console.log(`Network ID: ${chainId}`);
+            tempBalanceObjectInUSD[chainId] = {};
+            for (const [token, balance] of Object.entries(balances as any)) {
+              tempBalanceObjectInUSD[chainId][token] =
+                (balance as any) *
+                (token == "usdc" || token == "usdt"
+                  ? 1
+                  : token == "link"
+                  ? linkUsdValue
+                  : chainId == "56" || chainId == "97"
+                  ? bnbUsdValue
+                  : ethUsdValue);
+              if (chainId == "1" || chainId == "56")
+                tempTotalValueMainnet += tempBalanceObjectInUSD[chainId][token];
+              else
+                tempTotalValueTestnet += tempBalanceObjectInUSD[chainId][token];
+            }
+          }
+          console.log("TEMP BALANCE OBJECT IN USD");
+          console.log(tempBalanceObjectInUSD);
+          setBalanceObjectInUSD(tempBalanceObjectInUSD);
+          setTotalBalanceMainnet(tempTotalValueMainnet);
+          setTotalBalanceTestnet(tempTotalValueTestnet);
         })();
       } catch (e) {
         console.log(e);
@@ -162,7 +147,7 @@ export default function Page() {
   }, [address, balanceFetched]);
 
   if (status == "disconnected") return <DefaultLanding />;
-  if (totalValue == null)
+  if (totalBalanceMainnet == null || totalBalanceTestnet == null)
     return (
       <div className="flex-1 flex flex-col justify-center items-center">
         <Spinner />
@@ -172,44 +157,107 @@ export default function Page() {
     <div className="flex-1">
       <div className="flex flex-col items-center py-6">
         <Image
-          src={"/coins/bnb.png"}
+          src={"/avatar.jpg"}
           height={50}
           width={60}
-          alt="Binance"
+          alt="Avatar"
           className="rounded-full"
         />
-        <p className="text-3xl mt-4 mb-2 font-bold">Binance Smart Chain</p>
-        <p className="text-sm text-muted-foreground ">Net Worth</p>
-        <p className="text-md font-semibold">
-          <span className="text-muted-foreground mx-1">$</span>
-          {roundUpToFiveDecimals(totalValue)}
-        </p>
+        <p className="text-3xl mt-4 mb-2 font-bold">Your Portfolio</p>
+        <div className="flex space-x-4">
+          <div>
+            <p className="text-sm text-muted-foreground ">Mainnet Worth</p>
+            <p className="text-md font-semibold">
+              <span className="text-muted-foreground mx-1">$</span>
+              {roundUpToFiveDecimals(totalBalanceMainnet.toString())}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground ">Testnet Worth</p>
+            <p className="text-md font-semibold">
+              <span className="text-muted-foreground mx-1">$</span>
+              {roundUpToFiveDecimals(totalBalanceTestnet.toString())}
+            </p>
+          </div>
+        </div>
       </div>
       <div className="grid grid-cols-3 gap-4">
         <TokenBalanceCard
           balances={{
-            eth: roundUpToFiveDecimals(ethBalance),
-            bnb: roundUpToFiveDecimals(bnbBalance),
-            usdc: roundUpToFiveDecimals(usdcBalance),
-            usdt: roundUpToFiveDecimals(usdtBalance),
-            link: roundUpToFiveDecimals(linkBalance),
+            eth: roundUpToFiveDecimals(balanceObject[1].native),
+            bnb: roundUpToFiveDecimals(balanceObject[56].native),
+            usdc: roundUpToFiveDecimals(
+              balanceObject[1].usdc + balanceObject[56].usdc
+            ),
+            usdt: roundUpToFiveDecimals(
+              balanceObject[1].usdt + balanceObject[56].usdt
+            ),
+            link: roundUpToFiveDecimals(
+              balanceObject[1].link + balanceObject[56].link
+            ),
+            teth: roundUpToFiveDecimals(balanceObject[11155111].native),
+            tbnb: roundUpToFiveDecimals(balanceObject[97].native),
+            tusdc: roundUpToFiveDecimals(
+              balanceObject[11155111].usdc + balanceObject[97].usdc
+            ),
+            tusdt: roundUpToFiveDecimals(
+              balanceObject[11155111].usdt + balanceObject[97].usdt
+            ),
+            tlink: roundUpToFiveDecimals(
+              balanceObject[11155111].link + balanceObject[97].link
+            ),
           }}
           usdBalances={{
-            eth: roundUpToFiveDecimals(ethBalanceInUSD),
-            bnb: roundUpToFiveDecimals(bnbBalanceInUSD),
-            usdc: roundUpToFiveDecimals(usdcBalance),
-            usdt: roundUpToFiveDecimals(usdtBalance),
-            link: roundUpToFiveDecimals(linkBalanceInUSD),
+            eth: roundUpToFiveDecimals(balanceObjectInUSD[1].native),
+            bnb: roundUpToFiveDecimals(balanceObjectInUSD[56].native),
+            usdc: roundUpToFiveDecimals(
+              balanceObjectInUSD[1].usdc + balanceObjectInUSD[56].usdc
+            ),
+            usdt: roundUpToFiveDecimals(
+              balanceObjectInUSD[1].usdt + balanceObjectInUSD[56].usdt
+            ),
+            link: roundUpToFiveDecimals(
+              balanceObjectInUSD[1].link + balanceObjectInUSD[56].link
+            ),
+            teth: roundUpToFiveDecimals(balanceObjectInUSD[11155111].native),
+            tbnb: roundUpToFiveDecimals(balanceObjectInUSD[97].native),
+            tusdc: roundUpToFiveDecimals(
+              balanceObjectInUSD[11155111].usdc + balanceObjectInUSD[97].usdc
+            ),
+            tusdt: roundUpToFiveDecimals(
+              balanceObjectInUSD[11155111].usdt + balanceObjectInUSD[97].usdt
+            ),
+            tlink: roundUpToFiveDecimals(
+              balanceObjectInUSD[11155111].link + balanceObjectInUSD[97].link
+            ),
           }}
         />
         <PieChartComponent
           usdBalances={{
-            bnb: roundUpToFiveDecimals(bnbBalanceInUSD),
-            usdc: roundUpToFiveDecimals(usdcBalance),
-            usdt: roundUpToFiveDecimals(usdtBalance),
-            link: roundUpToFiveDecimals(linkBalanceInUSD),
-            eth: roundUpToFiveDecimals(ethBalanceInUSD),
+            eth: roundUpToFiveDecimals(balanceObjectInUSD[1].native),
+            bnb: roundUpToFiveDecimals(balanceObjectInUSD[56].native),
+            usdc: roundUpToFiveDecimals(
+              balanceObjectInUSD[1].usdc + balanceObjectInUSD[56].usdc
+            ),
+            usdt: roundUpToFiveDecimals(
+              balanceObjectInUSD[1].usdt + balanceObjectInUSD[56].usdt
+            ),
+            link: roundUpToFiveDecimals(
+              balanceObjectInUSD[1].link + balanceObjectInUSD[56].link
+            ),
+            teth: roundUpToFiveDecimals(balanceObjectInUSD[11155111].native),
+            tbnb: roundUpToFiveDecimals(balanceObjectInUSD[97].native),
+            tusdc: roundUpToFiveDecimals(
+              balanceObjectInUSD[11155111].usdc + balanceObjectInUSD[97].usdc
+            ),
+            tusdt: roundUpToFiveDecimals(
+              balanceObjectInUSD[11155111].usdt + balanceObjectInUSD[97].usdt
+            ),
+            tlink: roundUpToFiveDecimals(
+              balanceObjectInUSD[11155111].link + balanceObjectInUSD[97].link
+            ),
           }}
+          hideTestnet={hideTestnet}
         />
       </div>
     </div>

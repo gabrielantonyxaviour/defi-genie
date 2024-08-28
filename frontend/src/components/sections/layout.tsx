@@ -13,6 +13,7 @@ import { Link } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MainNav } from "./navbar";
 import AIComponent from "./ai";
+import { BalanceProvider } from "./context";
 
 interface ClassifyResponse {
   response: string;
@@ -33,6 +34,10 @@ export default function Layout({ children }: LayoutProps) {
     params: "",
   });
   const [access, setAccess] = useState(true); // TODO: Turn this off
+  const [totalBalanceMainnet, setTotalBalanceMainnet] = useState<number>(0);
+  const [totalBalanceTestnet, setTotalBalanceTestnet] = useState<number>(0);
+  const [balanceObject, setBalanceObject] = useState<any>({});
+  const [balanceObjectInUSD, setBalanceObjectInUSD] = useState<any>({});
   return (
     <>
       {/* <PasscodeDialog
@@ -52,7 +57,11 @@ export default function Layout({ children }: LayoutProps) {
 
             <div className="flex flex-1 space-x-12 w-full">
               <div className="flex-1 flex flex-col w-full h-full">
-                {status != "connected" ? <DefaultLanding /> : children}
+                {status != "connected" ? (
+                  <DefaultLanding />
+                ) : (
+                  <BalanceProvider>{children}</BalanceProvider>
+                )}
               </div>
             </div>
           </div>
