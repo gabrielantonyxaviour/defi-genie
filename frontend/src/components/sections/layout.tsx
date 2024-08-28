@@ -14,7 +14,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from "lucide-react";
+import {
+  ArrowLeftCircleIcon,
+  ArrowRight,
+  ArrowRightCircleIcon,
+} from "lucide-react";
 import { Button } from "../ui/button";
 interface ClassifyResponse {
   response: string;
@@ -75,8 +79,8 @@ export default function Layout({ children }: LayoutProps) {
             <SheetContent>
               <SheetHeader>
                 <SheetTitle className="relative">
-                  <ArrowRightCircleIcon
-                    className="h-6 w-6 absolute top-2 -left-9 text-muted-foreground cursor-pointer"
+                  <ArrowRight
+                    className="h-10 w-10 absolute -left-9 bg-background border-[1px]  p-2 text-WHITE cursor-pointer rounded-lg"
                     onClick={() => {
                       setOpenAi(false);
                     }}

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
@@ -26,6 +26,7 @@ import {
   ArrowLeftIcon,
   ArrowLeftSquareIcon,
 } from "lucide-react";
+import { useTokenBalance } from "./context";
 
 interface Convo {
   id: string;
@@ -46,47 +47,52 @@ export default function AIComponent({
   classifyResponse: ClassifyResponse;
   setClassifyResponse: (classifyResponse: ClassifyResponse) => void;
 }) {
-  const [convos, setConvos] = useState<Convo[]>([
-    {
-      id: "1",
-      isAI: true,
-      message:
-        "Certainly! I'd be happy to help you explore ways to potentially earn a 10% APY with your portfolio. However, it's important to note that such high yields often come with increased risk. Here are a few DeFi strategies you might consider:\n\n1. Yield farming: Provide liquidity to decentralized exchanges and earn rewards.\n2. Staking: Stake your cryptocurrencies on proof-of-stake networks.\n3. Lending platforms: Lend your crypto assets on platforms like Aave or Compound.\n4. Leveraged yield farming: Use borrowed funds to increase your yield, but be cautious of liquidation risks.\n5. Algorithmic stablecoins: Some offer high yields but carry significant risks.\n\nRemember, always do your own research and only invest what you can afford to lose. The crypto market is highly volatile, and past performance doesn't guarantee future results. Would you like me to elaborate on any specific strategy?",
-    },
-    {
-      id: "1",
-      isAI: true,
-      message:
-        "Certainly! I'd be happy to help you explore ways to potentially earn a 10% APY with your portfolio. However, it's important to note that such high yields often come with increased risk. Here are a few DeFi strategies you might consider:\n\n1. Yield farming: Provide liquidity to decentralized exchanges and earn rewards.\n2. Staking: Stake your cryptocurrencies on proof-of-stake networks.\n3. Lending platforms: Lend your crypto assets on platforms like Aave or Compound.\n4. Leveraged yield farming: Use borrowed funds to increase your yield, but be cautious of liquidation risks.\n5. Algorithmic stablecoins: Some offer high yields but carry significant risks.\n\nRemember, always do your own research and only invest what you can afford to lose. The crypto market is highly volatile, and past performance doesn't guarantee future results. Would you like me to elaborate on any specific strategy?",
-    },
-    {
-      id: "1",
-      isAI: true,
-      message:
-        "Certainly! I'd be happy to help you explore ways to potentially earn a 10% APY with your portfolio. However, it's important to note that such high yields often come with increased risk. Here are a few DeFi strategies you might consider:\n\n1. Yield farming: Provide liquidity to decentralized exchanges and earn rewards.\n2. Staking: Stake your cryptocurrencies on proof-of-stake networks.\n3. Lending platforms: Lend your crypto assets on platforms like Aave or Compound.\n4. Leveraged yield farming: Use borrowed funds to increase your yield, but be cautious of liquidation risks.\n5. Algorithmic stablecoins: Some offer high yields but carry significant risks.\n\nRemember, always do your own research and only invest what you can afford to lose. The crypto market is highly volatile, and past performance doesn't guarantee future results. Would you like me to elaborate on any specific strategy?",
-    },
-    {
-      id: "1",
-      isAI: true,
-      message:
-        "Certainly! I'd be happy to help you explore ways to potentially earn a 10% APY with your portfolio. However, it's important to note that such high yields often come with increased risk. Here are a few DeFi strategies you might consider:\n\n1. Yield farming: Provide liquidity to decentralized exchanges and earn rewards.\n2. Staking: Stake your cryptocurrencies on proof-of-stake networks.\n3. Lending platforms: Lend your crypto assets on platforms like Aave or Compound.\n4. Leveraged yield farming: Use borrowed funds to increase your yield, but be cautious of liquidation risks.\n5. Algorithmic stablecoins: Some offer high yields but carry significant risks.\n\nRemember, always do your own research and only invest what you can afford to lose. The crypto market is highly volatile, and past performance doesn't guarantee future results. Would you like me to elaborate on any specific strategy?",
-    },
-    {
-      id: "1",
-      isAI: true,
-      message:
-        "Certainly! I'd be happy to help you explore ways to potentially earn a 10% APY with your portfolio. However, it's important to note that such high yields often come with increased risk. Here are a few DeFi strategies you might consider:\n\n1. Yield farming: Provide liquidity to decentralized exchanges and earn rewards.\n2. Staking: Stake your cryptocurrencies on proof-of-stake networks.\n3. Lending platforms: Lend your crypto assets on platforms like Aave or Compound.\n4. Leveraged yield farming: Use borrowed funds to increase your yield, but be cautious of liquidation risks.\n5. Algorithmic stablecoins: Some offer high yields but carry significant risks.\n\nRemember, always do your own research and only invest what you can afford to lose. The crypto market is highly volatile, and past performance doesn't guarantee future results. Would you like me to elaborate on any specific strategy?",
-    },
-    {
-      id: "1",
-      isAI: true,
-      message:
-        "Certainly! I'd be happy to help you explore ways to potentially earn a 10% APY with your portfolio. However, it's important to note that such high yields often come with increased risk. Here are a few DeFi strategies you might consider:\n\n1. Yield farming: Provide liquidity to decentralized exchanges and earn rewards.\n2. Staking: Stake your cryptocurrencies on proof-of-stake networks.\n3. Lending platforms: Lend your crypto assets on platforms like Aave or Compound.\n4. Leveraged yield farming: Use borrowed funds to increase your yield, but be cautious of liquidation risks.\n5. Algorithmic stablecoins: Some offer high yields but carry significant risks.\n\nRemember, always do your own research and only invest what you can afford to lose. The crypto market is highly volatile, and past performance doesn't guarantee future results. Would you like me to elaborate on any specific strategy?",
-    },
-  ]);
+  const [convos, setConvos] = useState<Convo[]>([]);
   const [prompt, setPrompt] = useState<string>("");
-  const [expertAi, setExpertAi] = useState<boolean>(false);
   const { status } = useAccount();
+  const { balanceObjectInUSD } = useTokenBalance();
+  useEffect(() => {
+    (async function () {
+      console.log("BEFORE SNEDING TO AI");
+      console.log(balanceObjectInUSD);
+      if (balanceObjectInUSD != null) {
+        try {
+          const response = await axios.post("/api/classify", {
+            message: JSON.stringify(balanceObjectInUSD),
+          });
+
+          console.log(response.data);
+          if (response.data.success == false) throw Error("Error in response");
+
+          console.log(typeof response.data.response.response);
+          setConvos([
+            ...convos,
+            {
+              id: (convos.length + 1).toString(),
+              isAI: true,
+              message: response.data.response.response.replace(/\n/g, "<br />"),
+            },
+          ]);
+          console.log({
+            id: (convos.length + 1).toString(),
+            isAI: true,
+            message: response.data.response.response.replace(/\n/g, "<br />"),
+          });
+        } catch (e) {
+          console.log(e);
+          setConvos([
+            ...convos,
+            {
+              id: (convos.length + 1).toString(),
+              isAI: true,
+              message:
+                "There is something wrong with the AI. Please contact @marshal_14627 in Discord.",
+            },
+          ]);
+        }
+      }
+    })();
+  }, [balanceObjectInUSD]);
   return (
     <div className="h-screen my-auto pt-6 flex flex-col bg-background ">
       <ScrollArea className="h-[85%] flex flex-col space-y-2 no-scrollbar">
@@ -107,9 +113,7 @@ export default function AIComponent({
               <CardContent className="py-2 px-3">
                 {convo.isAI ? (
                   <ReactTyped
-                    strings={
-                      [convo.message.replace(/\n/g, "<br />")] as string[]
-                    }
+                    strings={[convo.message] as string[]}
                     typeSpeed={15}
                     showCursor={false}
                     onStop={() => {}}
@@ -127,7 +131,7 @@ export default function AIComponent({
             )}
           </div>
         ))}
-        {!convos[convos.length - 1].isAI && (
+        {(convos.length == 0 || !convos[convos.length - 1].isAI) && (
           <div
             key={convos.length}
             className={`flex text-sm justify-start items-center space-x-2`}
