@@ -11,7 +11,7 @@ import { roundUpToFiveDecimals } from "@/lib/utils";
 import { config } from "@/lib/config";
 import Spinner from "@/components/ui/loading";
 import { supportedchains, supportedcoins } from "@/lib/constants";
-import { useTokenBalance } from "@/components/sections/context";
+import { useEnvironmentContext } from "@/components/sections/context";
 import "@/styles/spinner.css";
 export default function Page() {
   const { status, address } = useAccount();
@@ -24,7 +24,7 @@ export default function Page() {
     setBalanceObject,
     balanceObjectInUSD,
     setBalanceObjectInUSD,
-  } = useTokenBalance();
+  } = useEnvironmentContext();
 
   if (status == "disconnected") return <DefaultLanding />;
   if (totalBalanceMainnet == null || totalBalanceTestnet == null)

@@ -23,6 +23,7 @@ import { readContract } from "@wagmi/core";
 import { config } from "@/lib/config";
 import { erc20Abi, formatEther } from "viem";
 import { roundUpToFiveDecimals } from "@/lib/utils";
+import { useEnvironmentContext } from "@/components/sections/context";
 interface ClassifyResponse {
   response: string;
   action: string;
@@ -35,7 +36,6 @@ export default function PoolPage() {
   const [selectedAction, setSelectedAction] = useState(false);
   const [fromAmount, setFromAmount] = useState("0");
   const [fromToken, setFromToken] = useState("usdt");
-  const [fromBalance, setFromBalance] = useState("0");
   const [toLoading, setToLoading] = useState(false);
   const [toToken, setToToken] = useState("link");
   const [toAmount, setToAmount] = useState("0");
@@ -46,60 +46,13 @@ export default function PoolPage() {
   const [openTransaction, setOpenTransaction] = useState(false);
   const [slippage, setSlippage] = useState("0.1");
   const [sellingPrice, setSellingPrice] = useState("0");
-  const [classifyResponse, setClassifyResponse] = useState<ClassifyResponse>({
-    response: "",
-    action: "",
-    params: "",
-  });
+
   const { data: nativeBalance } = useBalance({
     address,
   });
   const [chainChevron, setChainChevron] = useState(true);
-  const [readyForTrigger, setReadyForTrigger] = useState(false);
-  useEffect(() => {
-    console.log("Classify Response");
-    console.log(classifyResponse);
-    if (classifyResponse.action.length > 0) {
-      setSelectedAction(classifyResponse.action == "swap" ? false : true);
-      const p = classifyResponse.params.split("_");
-      console.log(p);
-      if (classifyResponse.params.length > 0 && p.length > 0) {
-        const chain = p[0];
-
-        const selectedChainId =
-          chain.toLocaleLowerCase() == "bnb"
-            ? 56
-            : chain.toLocaleLowerCase() == "sepolia"
-            ? 11155111
-            : 1;
-        if (selectedChainId != chainId)
-          switchChain({
-            chainId: selectedChainId,
-          });
-        if (
-          readyForTrigger &&
-          p[1].toLocaleLowerCase() == fromToken &&
-          p[2].toLocaleLowerCase() == toToken &&
-          ((classifyResponse.action == "swap" && p[3] == slippage) ||
-            (classifyResponse.action == "limit order" &&
-              p[3] == sellingPrice)) &&
-          p[4] == fromAmount
-        ) {
-          setOpenTransaction(true);
-          setReadyForTrigger(false);
-        } else {
-          setFromToken(p[1].toLocaleLowerCase());
-          setToToken(p[2].toLocaleLowerCase());
-          if (classifyResponse.action == "swap") setSlippage(p[3]);
-          else {
-            setSellingPrice((parseFloat(p[3]) / parseFloat(p[4])).toString());
-          }
-          setFromAmount(p[4]);
-          setReadyForTrigger(true);
-        }
-      } else setReadyForTrigger(false);
-    }
-  }, [classifyResponse]);
+  const { action, actionParams } = useEnvironmentContext();
+  const { balanceObject } = useEnvironmentContext();
 
   useEffect(() => {
     (async function () {
@@ -179,27 +132,6 @@ export default function PoolPage() {
   }, [selectedAction]);
 
   useEffect(() => {
-    if (fromToken == "nativeEth" || fromToken == "nativeBnb") {
-      console.log("BALANCE");
-      console.log(nativeBalance?.formatted || "0");
-      setFromBalance(nativeBalance?.formatted || "0");
-    } else {
-      const tokenAddress = supportedcoins[fromToken].token[chainId || 11155111];
-      (async function () {
-        const result = await readContract(config, {
-          abi: erc20Abi,
-          address: tokenAddress,
-          functionName: "balanceOf",
-          args: [address as `0x${string}`],
-        });
-        console.log("TOKEN BALANCE");
-        console.log(roundUpToFiveDecimals(formatEther(result)));
-        setFromBalance(roundUpToFiveDecimals(formatEther(result)));
-      })();
-    }
-  }, [fromToken]);
-
-  useEffect(() => {
     try {
       if (chainId == 97) {
         switchChain({ chainId: 56 });
@@ -210,6 +142,22 @@ export default function PoolPage() {
       console.log(e);
     }
   }, [chainId]);
+
+  useEffect(() => {
+    if (action == "swap") {
+      const p = actionParams.split("_");
+
+      setFromToken(p[1]);
+      setToToken(p[2]);
+      setSlippage(p[3]);
+      setFromAmount(p[4]);
+      const c = parseInt(p[0]);
+      if (c != chainId) {
+        switchChain({ chainId: c });
+      }
+    }
+  }, [action]);
+
   if (chainId == 97)
     return (
       <div className="flex flex-col space-y-4 justify-center items-center my-auto">
@@ -347,7 +295,8 @@ export default function PoolPage() {
               toAmount,
               setSlippage,
               slippage,
-              fromBalance,
+              fromBalance:
+                balanceObject[chainId?.toString() || "11155111"][fromToken],
               toLoading,
               triggerAction: () => {
                 setOpenTransaction(true);

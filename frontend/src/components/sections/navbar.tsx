@@ -5,15 +5,15 @@ import { usePathname } from "next/navigation";
 
 export function MainNav({
   className,
-  ...props
-}: React.HTMLAttributes<HTMLElement>) {
+  setOpenAi,
+}: {
+  className?: string;
+  setOpenAi: (path: string) => Promise<void>;
+}) {
   const pathname = usePathname();
 
   return (
-    <nav
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
-      {...props}
-    >
+    <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)}>
       <Link
         href="/"
         className={`text-sm font-medium ${
@@ -24,6 +24,9 @@ export function MainNav({
       </Link>
       <Link
         href="/pool"
+        onClick={() => {
+          setOpenAi("pool_page");
+        }}
         className={`text-sm font-medium ${
           pathname != "/pool" && " text-muted-foreground"
         } transition-colors hover:text-primary`}
@@ -32,6 +35,9 @@ export function MainNav({
       </Link>
       <Link
         href="/stake"
+        onClick={() => {
+          setOpenAi("stake_page");
+        }}
         className={`text-sm font-medium ${
           pathname != "/stake" && " text-muted-foreground"
         } transition-colors hover:text-primary`}
@@ -40,6 +46,9 @@ export function MainNav({
       </Link>
       <Link
         href="/positions"
+        onClick={() => {
+          setOpenAi("positions_page");
+        }}
         className={`text-sm font-medium ${
           pathname != "/positions" && " text-muted-foreground"
         } transition-colors hover:text-primary`}

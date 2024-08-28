@@ -1,4 +1,5 @@
 "use client";
+import { useEnvironmentContext } from "@/components/sections/context";
 import ApyTvl from "@/components/sections/stake/apy-tvl";
 import SwitchChainHeader from "@/components/sections/stake/header";
 import Receive from "@/components/sections/stake/receive";
@@ -22,6 +23,7 @@ export default function StakePage() {
   const { switchChain } = useSwitchChain();
   const { data } = useBalance({ address });
   const [open, setOpen] = useState(false);
+  const { action, actionParams } = useEnvironmentContext();
   const { data: sharePrice } = useReadContract({
     config,
     chainId: chainId as any,
@@ -72,7 +74,16 @@ export default function StakePage() {
         </div>
       </div>
     );
-
+  useEffect(() => {
+    if (action == "stake") {
+      const p = actionParams.split("_");
+      setStakeAmount(p[1]);
+      const c = parseInt(p[0]);
+      if (c != chainId) {
+        switchChain({ chainId: c });
+      }
+    }
+  }, [action]);
   return (
     <div className="flex justify-center items-center h-full">
       <Card className="border-none w-[500px] ">

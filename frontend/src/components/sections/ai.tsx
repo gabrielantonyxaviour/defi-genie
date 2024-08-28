@@ -20,12 +20,16 @@ export default function AIComponent({
   convos,
   setConvos,
   setClassifyResponse,
-  aiRefresh,
+  thinking,
+  setAction,
+  setActionParams,
 }: {
   convos: Convo[];
   setConvos: (convos: Convo[]) => void;
   setClassifyResponse: (response: any) => void;
-  aiRefresh: boolean;
+  thinking: boolean;
+  setAction: (action: string) => void;
+  setActionParams: (params: string) => void;
 }) {
   const [prompt, setPrompt] = useState<string>("");
 
@@ -47,16 +51,7 @@ export default function AIComponent({
             )}
             <Card className="max-w-[70%]">
               <CardContent className="py-2 px-3">
-                {convo.isAI && convo.id == convos.length.toString() ? (
-                  <ReactTyped
-                    strings={[convo.message] as string[]}
-                    typeSpeed={15}
-                    showCursor={false}
-                    onStop={() => {}}
-                  />
-                ) : (
-                  <p className="">{convo.message}</p>
-                )}
+                <p className="">{convo.message}</p>
               </CardContent>
             </Card>
             {!convo.isAI && (
@@ -67,7 +62,9 @@ export default function AIComponent({
             )}
           </div>
         ))}
-        {(convos.length == 0 || !convos[convos.length - 1].isAI) && (
+        {(convos.length == 0 ||
+          !convos[convos.length - 1].isAI ||
+          thinking) && (
           <div
             key={convos.length}
             className={`flex text-sm justify-start items-center space-x-2`}
@@ -88,7 +85,7 @@ export default function AIComponent({
         <Input
           type="text"
           disabled={
-            convos.length == 0 || !convos[convos.length - 1].isAI || aiRefresh
+            convos.length == 0 || !convos[convos.length - 1].isAI || thinking
           }
           value={prompt}
           onChange={(e) => {
@@ -101,7 +98,7 @@ export default function AIComponent({
           className="ml-2"
           size={"sm"}
           disabled={
-            convos.length == 0 || !convos[convos.length - 1].isAI || aiRefresh
+            convos.length == 0 || !convos[convos.length - 1].isAI || thinking
           }
           onClick={async () => {
             try {
@@ -121,6 +118,11 @@ export default function AIComponent({
               )
                 throw new Error("Error in response");
               setPrompt("");
+              if (response.data.response.action != "")
+                setAction(response.data.response.action);
+
+              if (response.data.response.params != "")
+                setActionParams(response.data.response.params);
               setConvos([
                 ...convos,
                 currentConvo,

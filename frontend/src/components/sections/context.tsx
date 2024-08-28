@@ -11,11 +11,15 @@ interface BalanceContextType {
   setBalanceObjectInUSD: (balanceObjectInUSD: any) => void;
   openAi: boolean;
   setOpenAi: (openAi: boolean) => void;
+  actionParams: string;
+  setActionParams: (actionParams: string) => void;
+  action: string;
+  setAction: (action: string) => void;
 }
 
 const BalanceContext = createContext<BalanceContextType | undefined>(undefined);
 
-export const useTokenBalance = () => {
+export const useEnvironmentContext = () => {
   const context = useContext(BalanceContext);
   if (!context) {
     throw new Error("useBalance must be used within a BalanceProvider");
@@ -33,6 +37,8 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
   const [balanceObject, setBalanceObject] = useState<any>(null);
   const [balanceObjectInUSD, setBalanceObjectInUSD] = useState<any>(null);
   const [openAi, setOpenAi] = useState<boolean>(false);
+  const [actionParams, setActionParams] = useState<string>("");
+  const [action, setAction] = useState<string>("");
   return (
     <BalanceContext.Provider
       value={{
@@ -46,6 +52,10 @@ export const BalanceProvider = ({ children }: { children: ReactNode }) => {
         setBalanceObjectInUSD,
         openAi,
         setOpenAi,
+        actionParams,
+        setActionParams,
+        action,
+        setAction,
       }}
     >
       {children}

@@ -20,11 +20,12 @@ import {
   ArrowRightCircleIcon,
 } from "lucide-react";
 import { Button } from "../ui/button";
-import { useTokenBalance } from "./context";
+import { useEnvironmentContext } from "./context";
 import axios from "axios";
 import { supportedchains, supportedcoins } from "@/lib/constants";
 import { getBalance } from "@wagmi/core";
 import { config } from "@/lib/config";
+import { usePathname, useRouter } from "next/navigation";
 interface Convo {
   id: string;
   isAI: boolean;
@@ -43,6 +44,8 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const { status, address } = useAccount();
+  const pathname = usePathname();
+  const router = useRouter();
   const [classifyResponse, setClassifyResponse] = useState<ClassifyResponse>({
     response: "",
     action: "",
@@ -54,11 +57,15 @@ export default function Layout({ children }: LayoutProps) {
     setBalanceObjectInUSD,
     setTotalBalanceMainnet,
     setTotalBalanceTestnet,
-  } = useTokenBalance();
+    setActionParams,
+    action,
+    setAction,
+    actionParams,
+  } = useEnvironmentContext();
   const [balanceFetched, setBalanceFetched] = useState(false);
   const [access, setAccess] = useState(true); // TODO: Turn this off
   const [openAi, setOpenAi] = useState(false);
-  const [aiRefresh, setAiRefresh] = useState(false);
+  const [thinking, setThinking] = useState(false);
   const [convos, setConvos] = useState<Convo[]>([]);
   useEffect(() => {
     (async function () {
@@ -66,6 +73,7 @@ export default function Layout({ children }: LayoutProps) {
       console.log(JSON.stringify(balanceObject));
       if (balanceFetched && balanceObject != null && convos.length == 0) {
         try {
+          setThinking(true);
           const response = await axios.post("/api/classify", {
             message: JSON.stringify(balanceObject),
           });
@@ -78,13 +86,13 @@ export default function Layout({ children }: LayoutProps) {
             {
               id: "1",
               isAI: true,
-              message: response.data.response.response.replace(/\n/g, "<br />"),
+              message: response.data.response.response,
             },
           ]);
           console.log({
             id: "1",
             isAI: true,
-            message: response.data.response.response.replace(/\n/g, "<br />"),
+            message: response.data.response.response,
           });
         } catch (e) {
           console.log(e);
@@ -97,8 +105,8 @@ export default function Layout({ children }: LayoutProps) {
                 "There is something wrong with the AI. Please refresh the page and try again. If this issue persists, contact @marshal_14627 in Discord.",
             },
           ]);
-          setAiRefresh(true);
         }
+        setThinking(false);
       }
     })();
   }, [balanceFetched]);
@@ -220,6 +228,18 @@ export default function Layout({ children }: LayoutProps) {
       }
     }
   }, [address, balanceFetched]);
+
+  useEffect(() => {
+    if (action == "swap" && pathname != "/pool") {
+      // TODO: Make AI explain the page
+      router.push("/pool");
+    }
+
+    if (action == "stake" && pathname != "/stake") {
+      // TODO: Make AI explain the page
+      router.push("/stake");
+    }
+  }, [action]);
   return (
     <>
       {access && (
@@ -229,7 +249,48 @@ export default function Layout({ children }: LayoutProps) {
               <div className="flex justify-between py-6 w-full">
                 <div className="flex items-center">
                   <Image src={"/logo.png"} height={50} width={50} alt="Logo" />
-                  <MainNav className="mx-6" />
+                  <MainNav
+                    className="mx-6"
+                    setOpenAi={async (path: string) => {
+                      setThinking(true);
+                      setOpenAi(true);
+                      try {
+                        const response = await axios.post("/api/classify", {
+                          message: path,
+                        });
+
+                        console.log(response.data);
+                        if (response.data.success == false)
+                          throw Error("Error in response");
+                        console.log(typeof response.data.response.response);
+                        setConvos([
+                          ...convos,
+                          {
+                            id: (convos.length + 1).toString(),
+                            isAI: true,
+                            message: response.data.response.response,
+                          },
+                        ]);
+                        console.log({
+                          id: (convos.length + 1).toString(),
+                          isAI: true,
+                          message: response.data.response.response,
+                        });
+                      } catch (e) {
+                        console.log(e);
+                        setConvos([
+                          ...convos,
+                          {
+                            id: (convos.length + 1).toString(),
+                            isAI: true,
+                            message:
+                              "There is something wrong with the AI. Please refresh the page and try again. If this issue persists, contact @marshal_14627 in Discord.",
+                          },
+                        ]);
+                      }
+                      setThinking(false);
+                    }}
+                  />
                 </div>
                 <div className="flex">
                   <ConnectButton />
@@ -243,6 +304,7 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             </div>
           </div>
+
           <Button
             disabled={status != "connected"}
             className="z-10 absolute bottom-10 right-10 border-2 rounded-full border-muted-foreground bg-transparent border-none hover:border-none hover:bg-transparent"
@@ -258,7 +320,12 @@ export default function Layout({ children }: LayoutProps) {
               className=" rounded-full border-[2px]"
             />
           </Button>
-          <Sheet open={openAi}>
+          <Sheet
+            open={openAi}
+            onOpenChange={(open) => {
+              setOpenAi(open);
+            }}
+          >
             <SheetContent>
               <SheetHeader>
                 <SheetTitle className="relative">
@@ -274,7 +341,9 @@ export default function Layout({ children }: LayoutProps) {
                     convos={convos}
                     setConvos={setConvos}
                     setClassifyResponse={setClassifyResponse}
-                    aiRefresh={aiRefresh}
+                    thinking={thinking}
+                    setAction={setAction}
+                    setActionParams={setActionParams}
                   />
                 </SheetDescription>
               </SheetHeader>
