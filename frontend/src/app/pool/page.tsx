@@ -200,11 +200,15 @@ export default function PoolPage() {
   }, [fromToken]);
 
   useEffect(() => {
-    if (chainId == 97) {
-      switchChainAsync({ chainId: 56 });
+    try {
+      if (chainId == 97) {
+        switchChain({ chainId: 56 });
+      }
+      setFromToken("usdt");
+      setToToken("link");
+    } catch (e) {
+      console.log(e);
     }
-    setFromToken("usdt");
-    setToToken("link");
   }, [chainId]);
   if (chainId == 97)
     return (

@@ -1,32 +1,14 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
-import { useAccount } from "wagmi";
-import { forma } from "viem/chains";
 import { ReactTyped } from "react-typed";
 import LoadingDots from "@/components/ui/loading-dots";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import axios from "axios";
-import {
-  ArrowLeft,
-  ArrowLeftCircle,
-  ArrowLeftCircleIcon,
-  ArrowLeftIcon,
-  ArrowLeftSquareIcon,
-} from "lucide-react";
-import { useTokenBalance } from "./context";
 
 interface Convo {
   id: string;
