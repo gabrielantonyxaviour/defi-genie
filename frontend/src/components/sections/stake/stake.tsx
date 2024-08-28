@@ -27,7 +27,7 @@ export default function Stake({
                 alt=""
                 className="rounded-full"
               />
-              <p className="text-xl font-bold  px-2">{`${"ETH"}`}</p>
+              <p className="text-xl font-bold  px-2">ETH</p>
             </div>
             <Input
               className="font-semibold focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0 bg-transparent border-none w-[50%] text-right  text-xl"

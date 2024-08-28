@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/menubar";
 import Image from "next/image";
 import { supportedchains } from "@/lib/constants";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeftCircleIcon, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -26,21 +26,11 @@ export default function ConnectButton() {
 
   return status == "connected" ? (
     <>
-      <Button
-        variant="outline"
-        className="my-auto "
-        onClick={() => {
-          disconnect();
-        }}
-      >
-        <Icons.binance className="h-6 w-6 fill-current mr-2" />
-        {address?.slice(0, 6) + "..." + address?.slice(-6)}
-      </Button>
       <Menubar
         onClick={() => {
           setChainChevron(!chainChevron);
         }}
-        className="border-none text-sm w-full"
+        className="border-none text-sm"
       >
         <MenubarMenu>
           <MenubarTrigger
@@ -73,17 +63,23 @@ export default function ConnectButton() {
               .sort((a, b) => a.id - b.id)
               .map((coin) => (
                 <MenubarItem
+                  key={coin.id}
                   disabled={
                     (pathname == "/pool" && coin.chainId == 97) ||
                     (pathname == "/stake" &&
-                      (coin.chainId == 56 || coin.chainId == 97))
+                      (coin.chainId == 56 || coin.chainId == 97)) ||
+                    (pathname == "/positions" && coin.chainId != 56)
                   }
                   className=" cursor-pointer w-full"
                   onClick={async () => {
-                    await switchChainAsync({
-                      chainId: coin.chainId,
-                    });
-                    setChainChevron(true);
+                    try {
+                      await switchChainAsync({
+                        chainId: coin.chainId,
+                      });
+                      setChainChevron(true);
+                    } catch (e) {
+                      console.log(e);
+                    }
                   }}
                 >
                   <div className="flex space-x-2 items-center w-full justify-between">
@@ -103,6 +99,16 @@ export default function ConnectButton() {
           </MenubarContent>
         </MenubarMenu>
       </Menubar>
+      <Button
+        variant="outline"
+        className="my-auto "
+        onClick={() => {
+          disconnect();
+        }}
+      >
+        <Icons.binance className="h-6 w-6 fill-current mr-2" />
+        {address?.slice(0, 6) + "..." + address?.slice(-6)}
+      </Button>
     </>
   ) : (
     <Button

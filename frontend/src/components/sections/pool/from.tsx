@@ -17,11 +17,13 @@ export default function From({
   setFromAmount,
   fromToken,
   setFromToken,
+  fromBalance,
   isTestnet,
   toToken,
 }: {
   toToken: string;
   fromAmount: string;
+  fromBalance: string;
   setFromAmount: (fromAmount: string) => void;
   fromToken: string;
   setFromToken: (fromToken: string) => void;
@@ -116,7 +118,7 @@ export default function From({
                 </MenubarItem>
               )}
               {Object.values(supportedcoins)
-                .slice(3)
+                .slice(10)
                 .map((coin) => (
                   <MenubarItem
                     disabled={coin.symbol.toLocaleLowerCase() == toToken}
@@ -153,7 +155,8 @@ export default function From({
 
       <CardFooter className="pb-4 px-2 flex justify-between text-muted-foreground">
         <p className="text-xs ">{supportedcoins[fromToken].name}</p>
-        {/* <p className="text-end text-xs font-medium">Balance: {} </p> */}
+
+        <p className="text-end text-xs font-medium">Balance: {fromBalance} </p>
       </CardFooter>
     </Card>
   );

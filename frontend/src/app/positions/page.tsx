@@ -4,6 +4,7 @@ import DefaultLanding from "@/components/sections/default-landing";
 import PositionsCard from "@/components/sections/positions-card";
 import RecentActionsCard from "@/components/sections/recent-actions-card";
 import BoxCard from "@/components/ui/box-card";
+import ConnectButton from "@/components/ui/connect-button";
 import Spinner from "@/components/ui/loading";
 import getPositionsPage from "@/lib/graph-queries/getPositionsPage";
 import { Action, Position } from "@/lib/type";
@@ -15,10 +16,11 @@ import {
   Notebook,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useSwitchChain } from "wagmi";
 
 export default function Page() {
-  const { address, status } = useAccount();
+  const { address, status, chainId } = useAccount();
+  const { switchChain } = useSwitchChain();
   const [positions, setPositions] = useState<Position[] | null>(null);
   const [actions, setActions] = useState<Action[] | null>(null);
   const [totalDeposited, setTotalDeposited] = useState<string | null>(null);
@@ -26,6 +28,8 @@ export default function Page() {
   // Get Net Spent
   useEffect(() => {
     if (positions == null) return;
+    console.log("positions");
+    console.log(positions);
     (async function () {
       let total = 0;
       for (let i = 0; i < positions.length; i++) {
@@ -78,13 +82,36 @@ export default function Page() {
   useEffect(() => {
     (async function () {
       const { positions: pos, actions: act } = await getPositionsPage({
-        address: "0x0429A2Da7884CA14E53142988D5845952fE4DF6a",
+        address: address as `0x${string}`,
       });
       setPositions(pos);
       setActions(act);
     })();
   }, []);
   if (status == "disconnected") return <DefaultLanding />;
+
+  useEffect(() => {
+    if (chainId == 97 || chainId == 1 || chainId == 11155111) {
+      try {
+        switchChain({ chainId: 56 });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [chainId]);
+  if (chainId != 56)
+    return (
+      <div className="flex flex-col space-y-4 justify-center items-center my-auto">
+        <p className="text-lg font-semibold">
+          Please switch your chain to view{" "}
+          <span className="text-primary">Positions</span>
+        </p>
+        <div className="flex flex-col items-center">
+          <ConnectButton />
+        </div>
+      </div>
+    );
+
   if (
     totalDeposited == null ||
     totalClaimed == null ||

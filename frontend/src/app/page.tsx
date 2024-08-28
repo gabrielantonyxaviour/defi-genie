@@ -8,118 +8,116 @@ import Image from "next/image";
 import { PieChartComponent } from "@/components/ui/pie-chart";
 import { useEffect, useState } from "react";
 import { roundUpToFiveDecimals } from "@/lib/utils";
-import { getBalance } from "@wagmi/core";
 import { config } from "@/lib/config";
-import { TOKEN_ADDRESSES } from "@/lib/constants";
 import Spinner from "@/components/ui/loading";
-
+import { supportedchains, supportedcoins } from "@/lib/constants";
+import { useTokenBalance } from "@/components/sections/context";
+import "@/styles/spinner.css";
 export default function Page() {
   const { status, address } = useAccount();
-  const { data: bnbBalance } = useBalance({
-    address,
-  });
-
-  const [bnbBalanceInUSD, setBnbBalanceInUSD] = useState<string | null>(null);
-  const [usdcBalance, setUsdcBalance] = useState<string | null>(null);
-  const [usdtBalance, setUsdtBalance] = useState<string | null>(null);
-
-  useEffect(() => {
-    console.log(bnbBalance);
-    if (
-      bnbBalance != undefined &&
-      bnbBalanceInUSD == null &&
-      bnbBalance?.value > 0
-    ) {
-      fetch(
-        `/api/coinmarketcap/bnb-to-usd?amount=${bnbBalance.value.toString()}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setBnbBalanceInUSD(data.amount);
-        });
-    }
-
-    if (usdcBalance == null && usdtBalance == null) {
-      (async function () {
-        const { formatted: usdc } = await getBalance(config, {
-          address: address || "0x0000000000000000000000000000000000000000",
-          token: TOKEN_ADDRESSES.usdc,
-          unit: "ether",
-        });
-        const { formatted: usdt } = await getBalance(config, {
-          address: address || "0x0000000000000000000000000000000000000000",
-          token: TOKEN_ADDRESSES.usdt,
-          unit: "ether",
-        });
-        setUsdcBalance(usdc);
-        setUsdtBalance(usdt);
-      })();
-    }
-  }, [address, bnbBalance]);
+  const {
+    totalBalanceMainnet,
+    setTotalBalanceMainnet,
+    totalBalanceTestnet,
+    setTotalBalanceTestnet,
+    balanceObject,
+    setBalanceObject,
+    balanceObjectInUSD,
+    setBalanceObjectInUSD,
+  } = useTokenBalance();
 
   if (status == "disconnected") return <DefaultLanding />;
-  if (
-    bnbBalanceInUSD == null ||
-    usdcBalance == undefined ||
-    usdtBalance == undefined
-  )
+  if (totalBalanceMainnet == null || totalBalanceTestnet == null)
     return (
       <div className="flex-1 flex flex-col justify-center items-center">
-        <Spinner />
+        <div className="flex space-x-4 items-center">
+          <div className="spinner"></div>
+          <p className="font-semibold text-md">
+            {balanceObject != null ? "Finishing up" : "Fetching Balances"}
+          </p>
+        </div>
       </div>
     );
   return (
     <div className="flex-1">
       <div className="flex flex-col items-center py-6">
-        <Image
-          src={"/coins/bnb.png"}
-          height={50}
-          width={60}
-          alt="Binance"
-          className="rounded-full"
-        />
-        <p className="text-3xl mt-4 mb-2 font-bold">Binance Smart Chain</p>
-        <p className="text-sm text-muted-foreground ">Net Worth</p>
-        <p className="text-md font-semibold">
-          <span className="text-muted-foreground mx-1">$</span>
-          {roundUpToFiveDecimals(
-            (
-              parseFloat(bnbBalanceInUSD) +
-              parseFloat(usdcBalance) +
-              parseFloat(usdtBalance)
-            ).toString() || "0"
-          )}
-        </p>
+        <div className="flex">
+          <div className="flex flex-col items-center">
+            <Image
+              src={"/avatar.jpg"}
+              height={50}
+              width={60}
+              alt="Avatar"
+              className="rounded-full"
+            />
+            <p className="text-3xl mt-4 mb-2 font-bold">Your Portfolio</p>
+            <div className="flex space-x-8 text-center">
+              <div>
+                <p className="text-sm text-muted-foreground ">Mainnet Worth</p>
+                <p className="text-md font-semibold">
+                  <span className="text-muted-foreground mx-1">$</span>
+                  {roundUpToFiveDecimals(totalBalanceMainnet.toString())}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground ">Testnet Worth</p>
+                <p className="text-md font-semibold">
+                  <span className="text-muted-foreground mx-1">$</span>
+                  {roundUpToFiveDecimals(totalBalanceTestnet.toString())}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="w-[80%] mx-auto">
         <TokenBalanceCard
           balances={{
-            bnb: roundUpToFiveDecimals(bnbBalance?.formatted.toString() || "0"),
+            eth: roundUpToFiveDecimals(balanceObject[1].native),
+            bnb: roundUpToFiveDecimals(balanceObject[56].native),
             usdc: roundUpToFiveDecimals(
-              usdcBalance != undefined ? usdcBalance.toString() : "0"
+              balanceObject[1].usdc + balanceObject[56].usdc
             ),
             usdt: roundUpToFiveDecimals(
-              usdtBalance != undefined ? usdtBalance.toString() : "0"
+              balanceObject[1].usdt + balanceObject[56].usdt
+            ),
+            link: roundUpToFiveDecimals(
+              balanceObject[1].link + balanceObject[56].link
+            ),
+            teth: roundUpToFiveDecimals(balanceObject[11155111].native),
+            tbnb: roundUpToFiveDecimals(balanceObject[97].native),
+            tusdc: roundUpToFiveDecimals(
+              balanceObject[11155111].usdc + balanceObject[97].usdc
+            ),
+            tusdt: roundUpToFiveDecimals(
+              balanceObject[11155111].usdt + balanceObject[97].usdt
+            ),
+            tlink: roundUpToFiveDecimals(
+              balanceObject[11155111].link + balanceObject[97].link
             ),
           }}
           usdBalances={{
-            bnb: roundUpToFiveDecimals(bnbBalanceInUSD || "0"),
+            eth: roundUpToFiveDecimals(balanceObjectInUSD[1].native),
+            bnb: roundUpToFiveDecimals(balanceObjectInUSD[56].native),
             usdc: roundUpToFiveDecimals(
-              usdcBalance != undefined ? usdcBalance.toString() : "0"
+              balanceObjectInUSD[1].usdc + balanceObjectInUSD[56].usdc
             ),
             usdt: roundUpToFiveDecimals(
-              usdtBalance != undefined ? usdtBalance.toString() : "0"
+              balanceObjectInUSD[1].usdt + balanceObjectInUSD[56].usdt
             ),
-          }}
-        />
-        <PieChartComponent
-          usdBalances={{
-            bnb: roundUpToFiveDecimals(bnbBalanceInUSD || "0"),
-            usdc: roundUpToFiveDecimals(
-              usdcBalance != undefined ? usdcBalance.toString() : "0"
+            link: roundUpToFiveDecimals(
+              balanceObjectInUSD[1].link + balanceObjectInUSD[56].link
             ),
-            usdt: roundUpToFiveDecimals(
-              usdtBalance != undefined ? usdtBalance.toString() : "0"
+            teth: roundUpToFiveDecimals(balanceObjectInUSD[11155111].native),
+            tbnb: roundUpToFiveDecimals(balanceObjectInUSD[97].native),
+            tusdc: roundUpToFiveDecimals(
+              balanceObjectInUSD[11155111].usdc + balanceObjectInUSD[97].usdc
+            ),
+            tusdt: roundUpToFiveDecimals(
+              balanceObjectInUSD[11155111].usdt + balanceObjectInUSD[97].usdt
+            ),
+            tlink: roundUpToFiveDecimals(
+              balanceObjectInUSD[11155111].link + balanceObjectInUSD[97].link
             ),
           }}
         />

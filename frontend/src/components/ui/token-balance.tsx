@@ -1,4 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { supportedchains, supportedcoins } from "@/lib/constants";
+import { useEffect } from "react";
+import { ScrollArea, ScrollBar } from "./scroll-area";
 
 export function TokenBalance({
   balances,
@@ -7,9 +10,39 @@ export function TokenBalance({
   balances: Record<string, string>;
   usdBalances: Record<string, string>;
 }) {
+  useEffect(() => {
+    console.log(balances);
+    console.log(usdBalances);
+  }, []);
   return (
-    <div className="space-y-8">
-      <div className="flex items-center">
+    <ScrollArea className="h-[22rem] mx-0 px-0 w-full">
+      {Object.entries(usdBalances)
+        .sort(
+          ([, valueA], [, valueB]) => parseFloat(valueB) - parseFloat(valueA)
+        )
+        .map(([key, value]) => (
+          <div key={key} className="flex items-center py-3 px-3">
+            <Avatar className="h-9 w-9">
+              <AvatarImage src={supportedcoins[key].image} alt="Avatar" />
+              <AvatarFallback>OM</AvatarFallback>
+            </Avatar>
+            <div className="ml-4 space-y-1">
+              <p className="text-sm font-medium leading-none">
+                {supportedcoins[key].name}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {supportedcoins[key].symbol}
+              </p>
+            </div>
+            <div className="ml-auto space-y-1 text-right">
+              <p className="text-sm font-medium leading-none">
+                {balances[key]}
+              </p>
+              <p className="text-sm text-muted-foreground">${value}</p>
+            </div>
+          </div>
+        ))}
+      {/* <div className="flex items-center">
         <Avatar className="h-9 w-9">
           <AvatarImage src="/coins/bnb.png" alt="Avatar" />
           <AvatarFallback>OM</AvatarFallback>
@@ -52,7 +85,7 @@ export function TokenBalance({
           <p className="text-sm font-medium leading-none">{balances.usdc}</p>
           <p className="text-sm text-muted-foreground">${usdBalances.usdc}</p>
         </div>
-      </div>
-    </div>
+      </div> */}
+    </ScrollArea>
   );
 }

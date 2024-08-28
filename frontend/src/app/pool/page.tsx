@@ -12,14 +12,17 @@ import {
   MenubarItem,
   MenubarMenu,
 } from "@/components/ui/menubar";
-import { supportedchains } from "@/lib/constants";
+import { supportedchains, supportedcoins } from "@/lib/constants";
 
 import axios from "axios";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { use, useEffect, useState } from "react";
-import { useAccount, useSwitchChain } from "wagmi";
-
+import { useAccount, useBalance, useSwitchChain } from "wagmi";
+import { readContract } from "@wagmi/core";
+import { config } from "@/lib/config";
+import { erc20Abi, formatEther } from "viem";
+import { roundUpToFiveDecimals } from "@/lib/utils";
 interface ClassifyResponse {
   response: string;
   action: string;
@@ -32,6 +35,7 @@ export default function PoolPage() {
   const [selectedAction, setSelectedAction] = useState(false);
   const [fromAmount, setFromAmount] = useState("0");
   const [fromToken, setFromToken] = useState("usdt");
+  const [fromBalance, setFromBalance] = useState("0");
   const [toLoading, setToLoading] = useState(false);
   const [toToken, setToToken] = useState("link");
   const [toAmount, setToAmount] = useState("0");
@@ -46,6 +50,9 @@ export default function PoolPage() {
     response: "",
     action: "",
     params: "",
+  });
+  const { data: nativeBalance } = useBalance({
+    address,
   });
   const [chainChevron, setChainChevron] = useState(true);
   const [readyForTrigger, setReadyForTrigger] = useState(false);
@@ -172,8 +179,35 @@ export default function PoolPage() {
   }, [selectedAction]);
 
   useEffect(() => {
-    if (chainId == 97) {
-      switchChainAsync({ chainId: 56 });
+    if (fromToken == "nativeEth" || fromToken == "nativeBnb") {
+      console.log("BALANCE");
+      console.log(nativeBalance?.formatted || "0");
+      setFromBalance(nativeBalance?.formatted || "0");
+    } else {
+      const tokenAddress = supportedcoins[fromToken].token[chainId || 11155111];
+      (async function () {
+        const result = await readContract(config, {
+          abi: erc20Abi,
+          address: tokenAddress,
+          functionName: "balanceOf",
+          args: [address as `0x${string}`],
+        });
+        console.log("TOKEN BALANCE");
+        console.log(roundUpToFiveDecimals(formatEther(result)));
+        setFromBalance(roundUpToFiveDecimals(formatEther(result)));
+      })();
+    }
+  }, [fromToken]);
+
+  useEffect(() => {
+    try {
+      if (chainId == 97) {
+        switchChain({ chainId: 56 });
+      }
+      setFromToken("usdt");
+      setToToken("link");
+    } catch (e) {
+      console.log(e);
     }
   }, [chainId]);
   if (chainId == 97)
@@ -313,6 +347,7 @@ export default function PoolPage() {
               toAmount,
               setSlippage,
               slippage,
+              fromBalance,
               toLoading,
               triggerAction: () => {
                 setOpenTransaction(true);

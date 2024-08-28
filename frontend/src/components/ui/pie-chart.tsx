@@ -21,14 +21,21 @@ import {
 
 export function PieChartComponent({
   usdBalances,
+  hideTestnet,
 }: {
   usdBalances: Record<string, string>;
+  hideTestnet: boolean;
 }) {
   const chartData = [
     {
       token: "bnb",
       balance: parseFloat(usdBalances.bnb),
       fill: "var(--color-bnb)",
+    },
+    {
+      token: "eth",
+      balance: parseFloat(usdBalances.eth),
+      fill: "var(--color-eth)",
     },
     {
       token: "usdc",
@@ -40,6 +47,36 @@ export function PieChartComponent({
       balance: parseFloat(usdBalances.usdt),
       fill: "var(--color-usdt)",
     },
+    {
+      token: "link",
+      balance: parseFloat(usdBalances.link),
+      fill: "var(--color-link)",
+    },
+    {
+      token: "tbnb",
+      balance: parseFloat(usdBalances.tbnb),
+      fill: "var(--color-tbnb)",
+    },
+    {
+      token: "teth",
+      balance: parseFloat(usdBalances.teth),
+      fill: "var(--color-teth)",
+    },
+    {
+      token: "tusdc",
+      balance: parseFloat(usdBalances.tusdc),
+      fill: "var(--color-tusdc)",
+    },
+    {
+      token: "tusdt",
+      balance: parseFloat(usdBalances.tusdt),
+      fill: "var(--color-tusdt)",
+    },
+    {
+      token: "tlink",
+      balance: parseFloat(usdBalances.tlink),
+      fill: "var(--color-tlink)",
+    },
   ];
   const chartConfig = {
     balance: {
@@ -47,17 +84,52 @@ export function PieChartComponent({
     },
     bnb: {
       label: "BNB",
-      color: "#F0B90B",
+      color: "#F0B90B", // Yellow
+    },
+    eth: {
+      label: "ETH",
+      color: "#627EEA", // Blue
     },
     usdc: {
       label: "USDC",
-      color: "#2775CA",
+      color: "#2775CA", // Deep Blue
     },
     usdt: {
       label: "USDT",
-      color: "#26A17B",
+      color: "#26A17B", // Green
+    },
+    link: {
+      label: "LINK",
+      color: "#2A5ADA", // Royal Blue
+    },
+    tbnb: {
+      label: "tBNB",
+      color: "#FFB74D", // Light Orange
+    },
+    teth: {
+      label: "tETH",
+      color: "#A785FF", // Light Purple
+    },
+    tusdc: {
+      label: "tUSDC",
+      color: "#56CCF2", // Sky Blue
+    },
+    tusdt: {
+      label: "tUSDT",
+      color: "#81C784", // Light Green
+    },
+    tlink: {
+      label: "tLINK",
+      color: "#8E24AA", // Purple
     },
   } satisfies ChartConfig;
+  React.useEffect(() => {
+    console.log("CHart data");
+    console.log(chartData);
+
+    console.log("CHARt config");
+    console.log(chartConfig);
+  }, []);
   return (
     <ChartContainer
       config={chartConfig}

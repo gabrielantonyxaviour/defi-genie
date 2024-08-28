@@ -23,7 +23,6 @@ const getExchangeRate = async (id: number): Promise<number> => {
 };
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    // TODO: I neeed my query params here
     const { searchParams } = req.nextUrl;
     const from = searchParams.get("from");
     const to = searchParams.get("to");
